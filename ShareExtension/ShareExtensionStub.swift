@@ -1,7 +1,10 @@
 import UIKit
 import Social
+import NexusFiles
 
 class ShareViewController: UIViewController {
+    private let homeVM = HomeViewModel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         handleIncomingFile()
@@ -22,19 +25,31 @@ class ShareViewController: UIViewController {
     }
 
     private func presentSave(for url: URL) {
-        let picker = UIDocumentPickerViewController(forExporting: [url])
-        picker.shouldShowFileExtensions = true
-        picker.delegate = self
-        present(picker, animated: true)
+        let alert = UIAlertController(title: "Import File", message: "Choose Category", preferredStyle: .actionSheet)
+        for cat in homeVM.categories {
+            alert.addAction(UIAlertAction(title: cat.name, style: .default) { _ in
+                self.save(url, to: cat)
+            })
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            self.extensionContext?.completeRequest(returningItems: nil)
+        })
+        present(alert, animated: true)
+    }
+
+    private func save(_ url: URL, to category: Category) {
+        let dest = homeVM.folderURL(for: category.id).appendingPathComponent(url.lastPathComponent)
+        do {
+            try FileManager.default.copyItem(at: url, to: dest)
+            homeVM.loadCategories()
+            extensionContext?.completeRequest(returningItems: nil)
+        } catch {
+            let err = UIAlertController(title: "Error", message: "Import failed", preferredStyle: .alert)
+            err.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+                self.extensionContext?.completeRequest(returningItems: nil)
+            })
+            present(err, animated: true)
+        }
     }
 }
 
-extension ShareViewController: UIDocumentPickerDelegate {
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        extensionContext?.completeRequest(returningItems: nil)
-    }
-
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        extensionContext?.completeRequest(returningItems: nil)
-    }
-}

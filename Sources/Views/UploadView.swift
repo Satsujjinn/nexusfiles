@@ -10,8 +10,8 @@ struct UploadView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                Text("Save \(fileURL.lastPathComponent)").font(.headline)
-                Picker("Destination", selection: $selectedCategory) {
+                Text("Save \(fileURL.lastPathComponent)".localized).font(.headline)
+                Picker("Destination".localized, selection: $selectedCategory) {
                     ForEach(homeVM.categories) { cat in
                         Text(cat.name).tag(Optional(cat))
                     }
@@ -20,13 +20,13 @@ struct UploadView: View {
                 if progress > 0 && progress < 1 {
                     ProgressView(value: progress)
                 }
-                Button("Save") { save() }
+                Button("Save".localized) { save() }
                     .buttonStyle(.borderedProminent)
                     .disabled(selectedCategory == nil)
             }
             .padding()
-            .navigationTitle("Upload")
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
+            .navigationTitle("Upload".localized)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel".localized) { dismiss() } } }
         }
     }
 
