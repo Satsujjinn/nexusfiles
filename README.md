@@ -24,7 +24,8 @@ The interface is presented in English. The Home screen automatically populates w
 1. Clone this repository.
 2. Open `Package.swift` in Xcode 17.3 or newer.
 3. Build and run the `NexusFiles` target on an iOS 17 simulator or device.
-   Swift Package Manager will automatically fetch all dependencies, including the Swift 6 branch of ZIPFoundation used by CoreXLSX.
+   Swift Package Manager automatically fetches dependencies, including the Swift 6 branch of ZIPFoundation used by CoreXLSX.
+   The `libxlsxwriter` C library is compiled automatically when xlsxwriter.swift resolves, so no manual installation is required.
 4. To verify the command-line build, run:
    ```bash
    swift build
