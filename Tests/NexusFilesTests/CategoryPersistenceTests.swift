@@ -24,4 +24,22 @@ final class CategoryPersistenceTests: XCTestCase {
             vm.deleteCategory(at: IndexSet(integer: idx))
         }
     }
+
+    func testRenamingToExistingCategoryIsIgnored() throws {
+        let vm = HomeViewModel()
+        vm.addCategory(name: "One", icon: "folder")
+        vm.addCategory(name: "Two", icon: "folder")
+        if let id = vm.categories.first(where: { $0.name == "Two" })?.id {
+            vm.renameCategory(id: id, name: "One", icon: "folder", color: "blue")
+        }
+        let count = vm.categories.filter { $0.name == "One" }.count
+        XCTAssertEqual(count, 1)
+        // Cleanup
+        if let idx = vm.categories.firstIndex(where: { $0.name == "One" }) {
+            vm.deleteCategory(at: IndexSet(integer: idx))
+        }
+        if let idx = vm.categories.firstIndex(where: { $0.name == "Two" }) {
+            vm.deleteCategory(at: IndexSet(integer: idx))
+        }
+    }
 }

@@ -93,6 +93,11 @@ final class HomeViewModel: ObservableObject {
 
     func renameCategory(id: UUID, name: String, icon: String, color: String) {
         guard let index = categories.firstIndex(where: { $0.id == id }) else { return }
+        // Prevent renaming to an existing category name (case-insensitive)
+        guard !categories.contains(where: { $0.id != id && $0.name.localizedCaseInsensitiveCompare(name) == .orderedSame }) else {
+            Log.general.info("Category \(name, privacy: .public) already exists")
+            return
+        }
         categories[index].name = name
         categories[index].icon = icon
         categories[index].color = color
