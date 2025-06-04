@@ -23,6 +23,7 @@ struct RecommendationView: View {
                 ActivityView(activityItems: [url])
             }
             .onDisappear { vm.saveDraft() }
+            .applyAppTheme()
         }
     }
 

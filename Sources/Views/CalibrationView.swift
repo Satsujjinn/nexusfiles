@@ -23,6 +23,7 @@ struct CalibrationView: View {
                 ActivityView(activityItems: [url])
             }
             .onDisappear { vm.saveDraft() }
+            .applyAppTheme()
         }
     }
 

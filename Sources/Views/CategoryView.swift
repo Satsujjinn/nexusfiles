@@ -25,6 +25,7 @@ struct CategoryView: View {
             }
             .onDelete(perform: delete)
         }
+        .applyAppTheme()
         .navigationTitle(category.name)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
