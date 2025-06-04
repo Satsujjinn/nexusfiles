@@ -7,19 +7,19 @@ struct CategoryView: View {
     @State private var showingImport = false
     @State private var importURL: URL?
     @State private var shareURL: URL?
+    @State private var previewURL: URL?
     @State private var isSaving = false
 
     var body: some View {
         List {
-            ForEach(items, id: \.self) { url in
+            ForEach(items, id: \._self) { url in
                 HStack {
                     Image(systemName: url.hasDirectoryPath ? "folder" : "doc")
                     Text(url.lastPathComponent)
+                        .onTapGesture { if !url.hasDirectoryPath { previewURL = url } }
                     Spacer()
                     if !url.hasDirectoryPath {
-                        Button(action: { share(url) }) {
-                            Image(systemName: "square.and.arrow.up")
-                        }
+                        Button(action: { share(url) }) { Image(systemName: "square.and.arrow.up") }
                     }
                 }
             }
@@ -28,57 +28,66 @@ struct CategoryView: View {
         .navigationTitle(category.name)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { showingImport = true }) {
-                    Image(systemName: "plus")
-                }
+                Button(action: { showingImport = true }) { Image(systemName: "plus") }
             }
         }
-        .onAppear(perform: load)
+        .task { await load() }
         .fileImporter(isPresented: $showingImport, allowedContentTypes: [.data], allowsMultipleSelection: false) { result in
             switch result {
             case .success(let urls):
-                if let first = urls.first { importURL = first; saveImported() }
+                if let first = urls.first { importURL = first; Task { await saveImported() } }
             case .failure(let error):
                 print("Import error: \(error)")
             }
         }
-        .sheet(item: $shareURL) { url in
-            ActivityView(activityItems: [url])
-        }
+        .sheet(item: $shareURL) { url in ActivityView(activityItems: [url]) }
+        .sheet(item: $previewURL) { url in QuickLookPreview(url: url) }
         .overlay(Group { if isSaving { ProgressView().progressViewStyle(.circular) } })
     }
 
-    private func load() {
+    private func load() async {
         do {
-            items = try FileManager.default.contentsOfDirectory(at: baseURL, includingPropertiesForKeys: nil)
+            let urls: [URL] = try await Task.detached { try FileManager.default.contentsOfDirectory(at: baseURL, includingPropertiesForKeys: nil) }.value
+            items = urls
         } catch {
             print("Load error: \(error)")
         }
     }
 
     private func delete(at offsets: IndexSet) {
-        for index in offsets {
-            let url = items[index]
-            try? FileManager.default.removeItem(at: url)
+        Task {
+            for index in offsets {
+                let url = items[index]
+                try? FileManager.default.removeItem(at: url)
+            }
+            await load()
         }
-        load()
     }
 
-    private func share(_ url: URL) {
-        shareURL = url
+    private func share(_ url: URL) { shareURL = url }
+
+    private func uniqueURL(for url: URL) -> URL {
+        var dest = baseURL.appendingPathComponent(url.lastPathComponent)
+        var counter = 1
+        while FileManager.default.fileExists(atPath: dest.path) {
+            let name = url.deletingPathExtension().lastPathComponent + "-\(counter)"
+            dest = baseURL.appendingPathComponent(name).appendingPathExtension(url.pathExtension)
+            counter += 1
+        }
+        return dest
     }
 
-    private func saveImported() {
+    private func saveImported() async {
         guard let importURL else { return }
-        let dest = baseURL.appendingPathComponent(importURL.lastPathComponent)
+        let dest = uniqueURL(for: importURL)
         do {
             isSaving = true
-            try FileManager.default.copyItem(at: importURL, to: dest)
+            try await Task.detached { try FileManager.default.copyItem(at: importURL, to: dest) }.value
             isSaving = false
         } catch {
             print("Copy error: \(error)")
             isSaving = false
         }
-        load()
+        await load()
     }
 }
