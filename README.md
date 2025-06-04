@@ -34,6 +34,10 @@ Building on Linux requires the `libxlsxwriter` development package. However, the
 
 The exported Excel files are saved to the app's documents directory. Each file name includes an ISO‑8601 timestamp for easy organization. Files can be shared directly from the app using the standard iOS share sheet.
 
+### Persistent categories
+
+Categories created on the Home screen are saved as JSON in the app's documents directory. They are automatically sorted alphabetically whenever they're modified.
+
 ## Contributing
 
 Contributions are welcome. Please open issues or pull requests on GitHub. All code is expected to follow Swift style conventions and include clear commit messages.
