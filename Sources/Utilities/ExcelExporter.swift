@@ -1,0 +1,129 @@
+import Foundation
+import xlsxwriter
+import UIKit
+
+struct ExcelExporter {
+    static func isoDateString(_ date: Date = Date()) -> String {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
+        return formatter.string(from: date)
+    }
+
+    static func documentsURL(filename: String) -> URL {
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return docs.appendingPathComponent(filename)
+    }
+
+    static func exportTractorInfo(pestRows: [PestRow], weedRows: [WeedRow]) throws -> URL {
+        let fileURL = documentsURL(filename: "NexusFiles_TractorInfo_\(isoDateString()).xlsx")
+        let workbook = Workbook(fileURL.path)
+        defer { workbook.close() }
+
+        var worksheet = workbook.addWorksheet(name: "Plaagbeheer")
+        write(rows: pestRows.map { [$0.trekker, $0.rat, $0.revs, $0.tyd, $0.pomp, $0.druk] },
+              headers: ["Trekker", "Rat", "Revs", "Tyd oor toetsafstand", "Pomp", "Druk"],
+              to: &worksheet)
+
+        worksheet = workbook.addWorksheet(name: "Onkruidbeheer")
+        write(rows: weedRows.map { [$0.trekker, $0.rat, $0.revs, $0.tyd, $0.pomp, $0.druk] },
+              headers: ["Trekker", "Rat", "Revs", "Tyd oor toetsafstand", "Pomp", "Druk"],
+              to: &worksheet)
+
+        return fileURL
+    }
+
+    static func exportCalibration(metadata: CalibrationMetadata, rows: [CalibrationRow]) throws -> URL {
+        let fileURL = documentsURL(filename: "NexusFiles_Kalibrasie_\(isoDateString()).xlsx")
+        let workbook = Workbook(fileURL.path)
+        defer { workbook.close() }
+
+        var sheet = workbook.addWorksheet(name: "Kalibrasie")
+        var rowIndex = 0
+        sheet.writeString(row: rowIndex, column: 0, string: "Produisent")
+        sheet.writeString(row: rowIndex, column: 1, string: metadata.producer)
+        rowIndex += 1
+        sheet.writeString(row: rowIndex, column: 0, string: "Plaas")
+        sheet.writeString(row: rowIndex, column: 1, string: metadata.farm)
+        rowIndex += 1
+        sheet.writeString(row: rowIndex, column: 0, string: "Datum")
+        sheet.writeString(row: rowIndex, column: 1, string: isoDateString(metadata.selectedDate))
+        rowIndex += 1
+        sheet.writeString(row: rowIndex, column: 0, string: "Agent")
+        sheet.writeString(row: rowIndex, column: 1, string: metadata.agentName)
+        rowIndex += 1
+        sheet.writeString(row: rowIndex, column: 0, string: "Gewas")
+        sheet.writeString(row: rowIndex, column: 1, string: metadata.crop)
+        rowIndex += 2
+
+        let headers = ["Trekker", "Rat", "Revs", "Tyd oor toetsafstand", "Pomp", "Druk", "Aantal Sputkoppe", "Tipe Sputkop", "Lewering (L/ha)", "Water"]
+        for (i, header) in headers.enumerated() {
+            sheet.writeString(row: rowIndex, column: lxw_col_t(i), string: header)
+        }
+        rowIndex += 1
+
+        for r in rows {
+            let values = [r.trekker, r.rat, r.revs, r.tyd, r.pomp, r.druk, r.aantalSputkoppe, r.tipeSputkop, r.lewering, r.water]
+            for (c, v) in values.enumerated() {
+                sheet.writeString(row: rowIndex, column: lxw_col_t(c), string: v)
+            }
+            rowIndex += 1
+        }
+
+        return fileURL
+    }
+
+    static func exportRecommendation(metadata: RecommendationMetadata, rows: [RecommendationRow]) throws -> URL {
+        let fileURL = documentsURL(filename: "NexusFiles_Aanbeveling_\(isoDateString()).xlsx")
+        let workbook = Workbook(fileURL.path)
+        defer { workbook.close() }
+
+        var sheet = workbook.addWorksheet(name: "Aanbeveling")
+        var rowIndex = 0
+        sheet.writeString(row: rowIndex, column: 0, string: "Plaas")
+        sheet.writeString(row: rowIndex, column: 1, string: metadata.farm)
+        rowIndex += 1
+        sheet.writeString(row: rowIndex, column: 0, string: "Agent")
+        sheet.writeString(row: rowIndex, column: 1, string: metadata.agentName)
+        rowIndex += 1
+        sheet.writeString(row: rowIndex, column: 0, string: "Datum")
+        sheet.writeString(row: rowIndex, column: 1, string: isoDateString(metadata.selectedDate))
+        rowIndex += 2
+
+        let headers = ["Gewas", "Teiken", "Produk", "Aktief", "Dosis/100 LT", "Dosis/Ten K", "OHP", "Opmerkings"]
+        for (i, header) in headers.enumerated() {
+            sheet.writeString(row: rowIndex, column: lxw_col_t(i), string: header)
+        }
+        rowIndex += 1
+
+        for r in rows {
+            let values = [r.gewas, r.teiken, r.produk, r.aktief, r.dosis100LT, r.dosisTenK, r.ohp, r.opmerkings]
+            for (c, v) in values.enumerated() {
+                sheet.writeString(row: rowIndex, column: lxw_col_t(c), string: v)
+            }
+            rowIndex += 1
+        }
+
+        return fileURL
+    }
+
+    private static func write(rows: [[String]], headers: [String], to sheet: inout Worksheet) {
+        for (i, header) in headers.enumerated() {
+            sheet.writeString(row: 0, column: lxw_col_t(i), string: header)
+        }
+        for (rowIndex, row) in rows.enumerated() {
+            for (colIndex, value) in row.enumerated() {
+                sheet.writeString(row: rowIndex + 1, column: lxw_col_t(colIndex), string: value)
+            }
+        }
+    }
+}
+
+struct ActivityView: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
