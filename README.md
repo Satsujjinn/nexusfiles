@@ -18,17 +18,18 @@ The interface is presented in English. The Home screen automatically populates w
 - macOS 14 or later
 - Xcode 17.3
 - iOS 17 SDK
-- [Libxlsxwriter](https://libxlsxwriter.github.io/getting_started.html) installed on your system
 
 ## Getting Started
 
 1. Clone this repository.
-2. Install libxlsxwriter using Homebrew:
+2. Open `Package.swift` in Xcode 17.3 or newer.
+3. Build and run the `NexusFiles` target on an iOS 17 simulator or device.
+   Swift Package Manager will automatically fetch all dependencies, including the Swift 6 branch of ZIPFoundation used by CoreXLSX.
+4. To verify the command-line build, run:
    ```bash
-   brew install libxlsxwriter
+   swift build
+   swift test
    ```
-3. Open `Package.swift` in Xcode 17.3 or newer.
-4. Build and run the `NexusFiles` target on an iOS 17 simulator or device.
 
 To run the unit tests in Xcode select **Product ▸ Test** or run `swift test` from
 the command line (requires the dependencies above).
@@ -37,7 +38,7 @@ The app presents three tabs—Tractor Information, Calibration, and Recommendati
 
 ### Running on Linux
 
-Building on Linux requires the `libxlsxwriter` development package. However, the share extension uses UIKit, which is not available on Linux, so building the `NexusFilesShareExtension` target will fail. Use macOS with Xcode for the complete experience.
+On Linux the `libxlsxwriter` C library is built automatically via Swift Package Manager. The ZIP library [ZIPFoundation](https://github.com/weichsel/ZIPFoundation) is pulled from its `feature/swift6` branch so it compiles with Swift 6. The share extension uses UIKit, which is unavailable on Linux, so building the `NexusFilesShareExtension` target will fail. Use macOS with Xcode for the complete experience.
 
 ## Exporting Data
 
