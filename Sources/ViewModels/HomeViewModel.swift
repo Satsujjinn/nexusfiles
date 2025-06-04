@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import os
 
 /// Manages the list of categories shown on the Home screen and handles
 /// persistence of category metadata and folders.
@@ -68,6 +69,10 @@ final class HomeViewModel: ObservableObject {
     }
 
     func addCategory(name: String, icon: String, color: String = "blue") {
+        guard !categories.contains(where: { $0.name.localizedCaseInsensitiveCompare(name) == .orderedSame }) else {
+            Log.general.info("Category \(name, privacy: .public) already exists")
+            return
+        }
         let category = Category(name: name, icon: icon, color: color)
         categories.append(category)
         categories.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
