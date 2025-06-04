@@ -25,14 +25,18 @@ class ShareViewController: UIViewController {
     }
 
     private func presentOptions(for url: URL) {
-        let alert = UIAlertController(title: "Import File", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Tractor Info", style: .default) { _ in self.importTractor(url) })
-        alert.addAction(UIAlertAction(title: "Calibration", style: .default) { _ in self.importCalibration(url) })
-        alert.addAction(UIAlertAction(title: "Recommendation", style: .default) { _ in self.importRecommendation(url) })
+        let alert = UIAlertController(
+            title: NSLocalizedString("Import File", comment: "Share extension title"),
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Tractor Info", comment: "import option"), style: .default) { _ in self.importTractor(url) })
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Calibration", comment: "import option"), style: .default) { _ in self.importCalibration(url) })
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Recommendation", comment: "import option"), style: .default) { _ in self.importRecommendation(url) })
         for cat in homeVM.categories {
             alert.addAction(UIAlertAction(title: cat.name, style: .default) { _ in self.save(url, to: cat) })
         }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in self.extensionContext?.completeRequest(returningItems: nil) })
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "dismiss"), style: .cancel) { _ in self.extensionContext?.completeRequest(returningItems: nil) })
         present(alert, animated: true)
     }
 
@@ -92,8 +96,12 @@ class ShareViewController: UIViewController {
     }
 
     private func showError() {
-        let err = UIAlertController(title: "Error", message: "Import failed", preferredStyle: .alert)
-        err.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+        let err = UIAlertController(
+            title: NSLocalizedString("Error", comment: "alert title"),
+            message: NSLocalizedString("Import failed", comment: "alert message"),
+            preferredStyle: .alert
+        )
+        err.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "dismiss"), style: .default) { _ in
             self.extensionContext?.completeRequest(returningItems: nil)
         })
         present(err, animated: true)

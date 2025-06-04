@@ -1,0 +1,8 @@
+# Swift Package Manager build artifacts
+.build/
+
+# Xcode workspace files
+derivedData/
+
+# Swift Package Manager package resolution file
+Package.resolved
