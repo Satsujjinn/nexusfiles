@@ -22,15 +22,6 @@ The interface is presented in English. The Home screen automatically populates w
 ## Getting Started
 
 1. Clone this repository.
-2. Open `Package.swift` in Xcode 17.3 or newer.
-3. Build and run the `NexusFiles` target on an iOS 17 simulator or device.
-   Swift Package Manager automatically fetches dependencies, including the Swift 6 branch of ZIPFoundation used by CoreXLSX.
-   The `libxlsxwriter` C library is compiled automatically when xlsxwriter.swift resolves, so no manual installation is required.
-4. To verify the command-line build, run:
-   ```bash
-   swift build
-   swift test
-   ```
 
 To run the unit tests in Xcode select **Product ▸ Test** or run `swift test` from
 the command line (requires the dependencies above).
@@ -39,9 +30,7 @@ The app presents three tabs—Tractor Information, Calibration, and Recommendati
 
 ### Running on Linux
 
-On Linux the `libxlsxwriter` C library is built automatically via Swift Package Manager. The ZIP library [ZIPFoundation](https://github.com/weichsel/ZIPFoundation) is pulled from its `feature/swift6` branch so it compiles with Swift 6. The share extension uses UIKit, which is unavailable on Linux, so building the `NexusFilesShareExtension` target will fail. Use macOS with Xcode for the complete experience.
 
-## Exporting Data
 
 The exported Excel files are saved to the app's documents directory. Each file name includes an ISO‑8601 timestamp for easy organization. Files can be shared directly from the app using the standard iOS share sheet.
 
