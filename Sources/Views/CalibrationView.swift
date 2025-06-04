@@ -10,7 +10,7 @@ struct CalibrationView: View {
                 tableSection
             }
             .padding()
-            .navigationTitle("Kalibrasie".localized)
+            .navigationTitle("Calibration".localized)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Save to Excel".localized) { vm.saveToExcel() }
@@ -30,15 +30,15 @@ struct CalibrationView: View {
     private var metadataSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Produisent:".localized)
+                Text("Producer:".localized)
                 TextField("", text: $vm.metadata.producer).textFieldStyle(.roundedBorder)
             }
             HStack {
-                Text("Plaas:".localized)
+                Text("Farm:".localized)
                 TextField("", text: $vm.metadata.farm).textFieldStyle(.roundedBorder)
             }
             HStack {
-                Text("Datum:".localized)
+                Text("Date:".localized)
                 DatePicker("", selection: $vm.metadata.selectedDate, displayedComponents: .date)
                     .datePickerStyle(.compact)
             }
@@ -47,7 +47,7 @@ struct CalibrationView: View {
                 TextField("", text: $vm.metadata.agentName).textFieldStyle(.roundedBorder)
             }
             HStack {
-                Text("Gewas:".localized)
+                Text("Crop:".localized)
                 TextField("", text: $vm.metadata.crop).textFieldStyle(.roundedBorder)
             }
         }
@@ -63,15 +63,15 @@ struct CalibrationView: View {
                                 Image(systemName: "minus.circle.fill")
                             }
                             .buttonStyle(BorderlessButtonStyle())
-                            TextField("Trekker".localized, text: $row.trekker).textFieldStyle(.roundedBorder).frame(minWidth: 100)
-                            TextField("Rat".localized, text: $row.rat).textFieldStyle(.roundedBorder).frame(minWidth: 60)
-                            TextField("Revs".localized, text: $row.revs).textFieldStyle(.roundedBorder).frame(minWidth: 60)
-                            TextField("Tyd oor toetsafstand".localized, text: $row.tyd).textFieldStyle(.roundedBorder).frame(minWidth: 150)
-                            TextField("Pomp".localized, text: $row.pomp).textFieldStyle(.roundedBorder).frame(minWidth: 80)
-                            TextField("Druk".localized, text: $row.druk).textFieldStyle(.roundedBorder).frame(minWidth: 80)
-                            TextField("Aantal Sputkoppe".localized, text: $row.aantalSputkoppe).textFieldStyle(.roundedBorder).frame(minWidth: 120)
-                            TextField("Tipe Sputkop".localized, text: $row.tipeSputkop).textFieldStyle(.roundedBorder).frame(minWidth: 120)
-                            TextField("Lewering (L/ha)".localized, text: $row.lewering).textFieldStyle(.roundedBorder).frame(minWidth: 120)
+                            TextField("Tractor".localized, text: $row.trekker).textFieldStyle(.roundedBorder).frame(minWidth: 100)
+                            TextField("Gear".localized, text: $row.rat).textFieldStyle(.roundedBorder).frame(minWidth: 60)
+                            TextField("RPM".localized, text: $row.revs).textFieldStyle(.roundedBorder).frame(minWidth: 60)
+                            TextField("Time over distance".localized, text: $row.tyd).textFieldStyle(.roundedBorder).frame(minWidth: 150)
+                            TextField("Pump".localized, text: $row.pomp).textFieldStyle(.roundedBorder).frame(minWidth: 80)
+                            TextField("Pressure".localized, text: $row.druk).textFieldStyle(.roundedBorder).frame(minWidth: 80)
+                            TextField("Nozzles".localized, text: $row.aantalSputkoppe).textFieldStyle(.roundedBorder).frame(minWidth: 120)
+                            TextField("Nozzle Type".localized, text: $row.tipeSputkop).textFieldStyle(.roundedBorder).frame(minWidth: 120)
+                            TextField("Output (L/ha)".localized, text: $row.lewering).textFieldStyle(.roundedBorder).frame(minWidth: 120)
                             TextField("Water".localized, text: $row.water).textFieldStyle(.roundedBorder).frame(minWidth: 80)
                         }
                     }
@@ -84,15 +84,15 @@ struct CalibrationView: View {
         HStack {
             Spacer().frame(width: 24)
             Group {
-                Text("Trekker".localized).frame(minWidth: 100)
-                Text("Rat".localized).frame(minWidth: 60)
-                Text("Revs".localized).frame(minWidth: 60)
-                Text("Tyd oor toetsafstand".localized).frame(minWidth: 150)
-                Text("Pomp".localized).frame(minWidth: 80)
-                Text("Druk".localized).frame(minWidth: 80)
-                Text("Aantal Sputkoppe".localized).frame(minWidth: 120)
-                Text("Tipe Sputkop".localized).frame(minWidth: 120)
-                Text("Lewering (L/ha)".localized).frame(minWidth: 120)
+                Text("Tractor".localized).frame(minWidth: 100)
+                Text("Gear".localized).frame(minWidth: 60)
+                Text("RPM".localized).frame(minWidth: 60)
+                Text("Time over distance".localized).frame(minWidth: 150)
+                Text("Pump".localized).frame(minWidth: 80)
+                Text("Pressure".localized).frame(minWidth: 80)
+                Text("Nozzles".localized).frame(minWidth: 120)
+                Text("Nozzle Type".localized).frame(minWidth: 120)
+                Text("Output (L/ha)".localized).frame(minWidth: 120)
                 Text("Water".localized).frame(minWidth: 80)
             }
             .bold()

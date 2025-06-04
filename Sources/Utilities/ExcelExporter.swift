@@ -19,14 +19,14 @@ struct ExcelExporter {
         let workbook = Workbook(fileURL.path)
         defer { workbook.close() }
 
-        var worksheet = workbook.addWorksheet(name: "Plaagbeheer")
+        var worksheet = workbook.addWorksheet(name: "Pest Control")
         write(rows: pestRows.map { [$0.trekker, $0.rat, $0.revs, $0.tyd, $0.pomp, $0.druk] },
-              headers: ["Trekker", "Rat", "Revs", "Tyd oor toetsafstand", "Pomp", "Druk"],
+              headers: ["Tractor", "Gear", "RPM", "Time over distance", "Pump", "Pressure"],
               to: &worksheet)
 
-        worksheet = workbook.addWorksheet(name: "Onkruidbeheer")
+        worksheet = workbook.addWorksheet(name: "Weed Control")
         write(rows: weedRows.map { [$0.trekker, $0.rat, $0.revs, $0.tyd, $0.pomp, $0.druk] },
-              headers: ["Trekker", "Rat", "Revs", "Tyd oor toetsafstand", "Pomp", "Druk"],
+              headers: ["Tractor", "Gear", "RPM", "Time over distance", "Pump", "Pressure"],
               to: &worksheet)
 
         Log.general.info("Excel saved to \(fileURL.path, privacy: .public)")
@@ -34,29 +34,29 @@ struct ExcelExporter {
     }
 
     static func exportCalibration(metadata: CalibrationMetadata, rows: [CalibrationRow]) throws -> URL {
-        let fileURL = documentsURL(filename: "NexusFiles_Kalibrasie_\(isoDateString()).xlsx")
+        let fileURL = documentsURL(filename: "NexusFiles_Calibration_\(isoDateString()).xlsx")
         let workbook = Workbook(fileURL.path)
         defer { workbook.close() }
 
-        var sheet = workbook.addWorksheet(name: "Kalibrasie")
+        var sheet = workbook.addWorksheet(name: "Calibration")
         var rowIndex = 0
-        sheet.writeString(row: rowIndex, column: 0, string: "Produisent")
+        sheet.writeString(row: rowIndex, column: 0, string: "Producer")
         sheet.writeString(row: rowIndex, column: 1, string: metadata.producer)
         rowIndex += 1
-        sheet.writeString(row: rowIndex, column: 0, string: "Plaas")
+        sheet.writeString(row: rowIndex, column: 0, string: "Farm")
         sheet.writeString(row: rowIndex, column: 1, string: metadata.farm)
         rowIndex += 1
-        sheet.writeString(row: rowIndex, column: 0, string: "Datum")
+        sheet.writeString(row: rowIndex, column: 0, string: "Date")
         sheet.writeString(row: rowIndex, column: 1, string: isoDateString(metadata.selectedDate))
         rowIndex += 1
         sheet.writeString(row: rowIndex, column: 0, string: "Agent")
         sheet.writeString(row: rowIndex, column: 1, string: metadata.agentName)
         rowIndex += 1
-        sheet.writeString(row: rowIndex, column: 0, string: "Gewas")
+        sheet.writeString(row: rowIndex, column: 0, string: "Crop")
         sheet.writeString(row: rowIndex, column: 1, string: metadata.crop)
         rowIndex += 2
 
-        let headers = ["Trekker", "Rat", "Revs", "Tyd oor toetsafstand", "Pomp", "Druk", "Aantal Sputkoppe", "Tipe Sputkop", "Lewering (L/ha)", "Water"]
+        let headers = ["Tractor", "Gear", "RPM", "Time over distance", "Pump", "Pressure", "Nozzles", "Nozzle Type", "Output (L/ha)", "Water"]
         for (i, header) in headers.enumerated() {
             sheet.writeString(row: rowIndex, column: lxw_col_t(i), string: header)
         }
@@ -75,23 +75,23 @@ struct ExcelExporter {
     }
 
     static func exportRecommendation(metadata: RecommendationMetadata, rows: [RecommendationRow]) throws -> URL {
-        let fileURL = documentsURL(filename: "NexusFiles_Aanbeveling_\(isoDateString()).xlsx")
+        let fileURL = documentsURL(filename: "NexusFiles_Recommendation_\(isoDateString()).xlsx")
         let workbook = Workbook(fileURL.path)
         defer { workbook.close() }
 
-        var sheet = workbook.addWorksheet(name: "Aanbeveling")
+        var sheet = workbook.addWorksheet(name: "Recommendation")
         var rowIndex = 0
-        sheet.writeString(row: rowIndex, column: 0, string: "Plaas")
+        sheet.writeString(row: rowIndex, column: 0, string: "Farm")
         sheet.writeString(row: rowIndex, column: 1, string: metadata.farm)
         rowIndex += 1
         sheet.writeString(row: rowIndex, column: 0, string: "Agent")
         sheet.writeString(row: rowIndex, column: 1, string: metadata.agentName)
         rowIndex += 1
-        sheet.writeString(row: rowIndex, column: 0, string: "Datum")
+        sheet.writeString(row: rowIndex, column: 0, string: "Date")
         sheet.writeString(row: rowIndex, column: 1, string: isoDateString(metadata.selectedDate))
         rowIndex += 2
 
-        let headers = ["Gewas", "Teiken", "Produk", "Aktief", "Dosis/100 LT", "Dosis/Ten K", "OHP", "Opmerkings"]
+        let headers = ["Crop", "Target", "Product", "Active", "Dose/100 L", "Dose/Ten K", "OHP", "Notes"]
         for (i, header) in headers.enumerated() {
             sheet.writeString(row: rowIndex, column: lxw_col_t(i), string: header)
         }

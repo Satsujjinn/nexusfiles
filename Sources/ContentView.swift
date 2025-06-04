@@ -4,11 +4,11 @@ struct ContentView: View {
     var body: some View {
         TabView {
             TractorInfoView()
-                .tabItem { Label("Trekkerinligting", systemImage: "table") }
+                .tabItem { Label("Tractor Info", systemImage: "table") }
             CalibrationView()
-                .tabItem { Label("Kalibrasie", systemImage: "list.bullet.rectangle") }
+                .tabItem { Label("Calibration", systemImage: "list.bullet.rectangle") }
             RecommendationView()
-                .tabItem { Label("Aanbeveling", systemImage: "checklist") }
+                .tabItem { Label("Recommendation", systemImage: "checklist") }
         }
         .applyAppTheme()
     }

@@ -10,7 +10,7 @@ struct RecommendationView: View {
                 tableSection
             }
             .padding()
-            .navigationTitle("Aanbeveling".localized)
+            .navigationTitle("Recommendation".localized)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Save to Excel".localized) { vm.saveToExcel() }
@@ -30,7 +30,7 @@ struct RecommendationView: View {
     private var metadataSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Plaas:".localized)
+                Text("Farm:".localized)
                 TextField("", text: $vm.metadata.farm).textFieldStyle(.roundedBorder)
             }
             HStack {
@@ -38,7 +38,7 @@ struct RecommendationView: View {
                 TextField("", text: $vm.metadata.agentName).textFieldStyle(.roundedBorder)
             }
             HStack {
-                Text("Datum:".localized)
+                Text("Date:".localized)
                 DatePicker("", selection: $vm.metadata.selectedDate, displayedComponents: .date)
                     .datePickerStyle(.compact)
             }
@@ -55,14 +55,14 @@ struct RecommendationView: View {
                                 Image(systemName: "minus.circle.fill")
                             }
                             .buttonStyle(BorderlessButtonStyle())
-                            TextField("Gewas".localized, text: $row.gewas).textFieldStyle(.roundedBorder).frame(minWidth: 100)
-                            TextField("Teiken".localized, text: $row.teiken).textFieldStyle(.roundedBorder).frame(minWidth: 100)
-                            TextField("Produk".localized, text: $row.produk).textFieldStyle(.roundedBorder).frame(minWidth: 120)
-                            TextField("Aktief".localized, text: $row.aktief).textFieldStyle(.roundedBorder).frame(minWidth: 120)
-                            TextField("Dosis/100 LT".localized, text: $row.dosis100LT).textFieldStyle(.roundedBorder).frame(minWidth: 100)
-                            TextField("Dosis/Ten K".localized, text: $row.dosisTenK).textFieldStyle(.roundedBorder).frame(minWidth: 100)
+                            TextField("Crop".localized, text: $row.gewas).textFieldStyle(.roundedBorder).frame(minWidth: 100)
+                            TextField("Target".localized, text: $row.teiken).textFieldStyle(.roundedBorder).frame(minWidth: 100)
+                            TextField("Product".localized, text: $row.produk).textFieldStyle(.roundedBorder).frame(minWidth: 120)
+                            TextField("Active".localized, text: $row.aktief).textFieldStyle(.roundedBorder).frame(minWidth: 120)
+                            TextField("Dose/100 L".localized, text: $row.dosis100LT).textFieldStyle(.roundedBorder).frame(minWidth: 100)
+                            TextField("Dose/Ten K".localized, text: $row.dosisTenK).textFieldStyle(.roundedBorder).frame(minWidth: 100)
                             TextField("OHP".localized, text: $row.ohp).textFieldStyle(.roundedBorder).frame(minWidth: 80)
-                            TextField("Opmerkings".localized, text: $row.opmerkings).textFieldStyle(.roundedBorder).frame(minWidth: 200)
+                            TextField("Notes".localized, text: $row.opmerkings).textFieldStyle(.roundedBorder).frame(minWidth: 200)
                         }
                     }
                 }
@@ -74,14 +74,14 @@ struct RecommendationView: View {
         HStack {
             Spacer().frame(width: 24)
             Group {
-                Text("Gewas".localized).frame(minWidth: 100)
-                Text("Teiken".localized).frame(minWidth: 100)
-                Text("Produk".localized).frame(minWidth: 120)
-                Text("Aktief".localized).frame(minWidth: 120)
-                Text("Dosis/100 LT".localized).frame(minWidth: 100)
-                Text("Dosis/Ten K".localized).frame(minWidth: 100)
+                Text("Crop".localized).frame(minWidth: 100)
+                Text("Target".localized).frame(minWidth: 100)
+                Text("Product".localized).frame(minWidth: 120)
+                Text("Active".localized).frame(minWidth: 120)
+                Text("Dose/100 L".localized).frame(minWidth: 100)
+                Text("Dose/Ten K".localized).frame(minWidth: 100)
                 Text("OHP".localized).frame(minWidth: 80)
-                Text("Opmerkings".localized).frame(minWidth: 200)
+                Text("Notes".localized).frame(minWidth: 200)
             }
             .bold()
         }
