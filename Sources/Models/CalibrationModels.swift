@@ -1,6 +1,6 @@
 import Foundation
 
-struct CalibrationMetadata {
+struct CalibrationMetadata: Codable {
     var producer: String = ""
     var farm: String = ""
     var selectedDate: Date = Date()

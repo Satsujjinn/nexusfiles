@@ -6,6 +6,7 @@ import PackageDescription
 #if os(iOS)
 let package = Package(
     name: "NexusFiles",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17)
     ],
@@ -21,17 +22,25 @@ let package = Package(
             dependencies: [
                 .product(name: "xlsxwriter", package: "xlsxwriter.swift")
             ],
-            path: "Sources"
+            path: "Sources",
+            resources: [.process("Localization")]
         ),
         .target(
             name: "NexusFilesShareExtension",
+            dependencies: ["NexusFiles"],
             path: "ShareExtension"
+        ),
+        .testTarget(
+            name: "NexusFilesTests",
+            dependencies: ["NexusFiles"],
+            path: "Tests"
         )
     ]
 )
 #else
 let package = Package(
     name: "NexusFiles",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17)
     ],
@@ -47,7 +56,13 @@ let package = Package(
             dependencies: [
                 .product(name: "xlsxwriter", package: "xlsxwriter.swift")
             ],
-            path: "Sources"
+            path: "Sources",
+            resources: [.process("Localization")]
+        ),
+        .testTarget(
+            name: "NexusFilesTests",
+            dependencies: ["NexusFiles"],
+            path: "Tests"
         )
     ]
 )

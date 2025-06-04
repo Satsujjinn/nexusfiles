@@ -1,6 +1,6 @@
 import Foundation
 
-struct RecommendationMetadata {
+struct RecommendationMetadata: Codable {
     var farm: String = ""
     var agentName: String = ""
     var selectedDate: Date = Date()

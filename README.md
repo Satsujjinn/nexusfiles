@@ -38,6 +38,10 @@ The exported Excel files are saved to the app's documents directory. Each file n
 
 Categories created on the Home screen are saved as JSON in the app's documents directory. They are automatically sorted alphabetically whenever they're modified.
 
+### iCloud Sync
+
+If iCloud is available, NexusFiles copies saved categories and form drafts to your iCloud container so data is shared across your devices. Ensure you are logged into iCloud before running the app.
+
 ## Contributing
 
 Contributions are welcome. Please open issues or pull requests on GitHub. All code is expected to follow Swift style conventions and include clear commit messages.

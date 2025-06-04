@@ -25,7 +25,7 @@ struct HomeView: View {
                                 .shadow(radius: 1)
                         }
                         .contextMenu {
-                            Button("Rename") {
+                            Button("Rename".localized) {
                                 editingCategory = category
                                 editName = category.name
                                 editIcon = category.icon
@@ -38,8 +38,8 @@ struct HomeView: View {
                 .padding()
             }
             .background(Color.green.opacity(0.1))
-            .navigationTitle("NexusFiles")
-            .searchable(text: $searchText, prompt: "Search Categories")
+            .navigationTitle("NexusFiles".localized)
+            .searchable(text: $searchText, prompt: "Search Categories".localized)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showingAdd = true }) {
@@ -47,7 +47,7 @@ struct HomeView: View {
                     }
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink("Excel Tables") {
+                    NavigationLink("Excel Tables".localized) {
                         ContentView()
                     }
                 }
@@ -55,13 +55,13 @@ struct HomeView: View {
             .sheet(isPresented: $showingAdd) {
                 NavigationStack {
                     Form {
-                        TextField("Name", text: $newName)
-                        TextField("Icon", text: $newIcon)
+                        TextField("Name".localized, text: $newName)
+                        TextField("Icon".localized, text: $newIcon)
                     }
-                    .navigationTitle("New Category")
+                    .navigationTitle("New Category".localized)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Add") {
+                            Button("Add".localized) {
                                 vm.addCategory(name: newName, icon: newIcon)
                                 newName = ""
                                 newIcon = "folder"
@@ -70,7 +70,7 @@ struct HomeView: View {
                             .disabled(newName.isEmpty)
                         }
                         ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") { showingAdd = false }
+                            Button("Cancel".localized) { showingAdd = false }
                         }
                     }
                 }
@@ -78,13 +78,13 @@ struct HomeView: View {
             .sheet(isPresented: $showEdit) {
                 NavigationStack {
                     Form {
-                        TextField("Name", text: $editName)
-                        TextField("Icon", text: $editIcon)
+                        TextField("Name".localized, text: $editName)
+                        TextField("Icon".localized, text: $editIcon)
                     }
-                    .navigationTitle("Edit Category")
+                    .navigationTitle("Edit Category".localized)
                     .toolbar {
                         ToolbarItem(placement: .navigationBarTrailing) {
-                            Button("Save") {
+                            Button("Save".localized) {
                                 if let id = editingCategory?.id {
                                     vm.renameCategory(id: id, name: editName, icon: editIcon)
                                 }
@@ -93,7 +93,7 @@ struct HomeView: View {
                             .disabled(editName.isEmpty)
                         }
                         ToolbarItem(placement: .cancellationAction) {
-                            Button("Cancel") { showEdit = false }
+                            Button("Cancel".localized) { showEdit = false }
                         }
                     }
                 }

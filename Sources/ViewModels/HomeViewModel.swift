@@ -7,6 +7,9 @@ import SwiftUI
 final class HomeViewModel: ObservableObject {
     @Published var categories: [Category] = []
     private let fileManager = FileManager.default
+    private var iCloudURL: URL? {
+        fileManager.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Categories")
+    }
     private var categoriesURL: URL {
         fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("Categories")
@@ -16,6 +19,8 @@ final class HomeViewModel: ObservableObject {
     init() {
         loadCategories()
     }
+
+    var iCloudAvailable: Bool { fileManager.ubiquityIdentityToken != nil }
 
     func loadCategories() {
         do {
@@ -31,6 +36,10 @@ final class HomeViewModel: ObservableObject {
     func saveCategories() {
         do {
             try FileStorage.save(categories, to: dataURL)
+            if iCloudAvailable, let cloud = iCloudURL {
+                try fileManager.createDirectory(at: cloud.deletingLastPathComponent(), withIntermediateDirectories: true)
+                try FileStorage.save(categories, to: cloud.appendingPathComponent("categories.json"))
+            }
         } catch {
             print("Save error: \(error)")
         }
