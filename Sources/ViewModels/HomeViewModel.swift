@@ -3,7 +3,7 @@ import SwiftUI
 
 /// Manages the list of categories shown on the Home screen and handles
 /// persistence of category metadata and folders.
-
+@MainActor
 final class HomeViewModel: ObservableObject {
     @Published var categories: [Category] = []
     private let fileManager = FileManager.default
@@ -17,57 +17,71 @@ final class HomeViewModel: ObservableObject {
     private var dataURL: URL { categoriesURL.appendingPathComponent("categories.json") }
 
     init() {
-        loadCategories()
+        Task { await loadCategories() }
     }
 
     var iCloudAvailable: Bool { fileManager.ubiquityIdentityToken != nil }
 
-    func loadCategories() {
+    func loadCategories() async {
         do {
-            if fileManager.fileExists(atPath: dataURL.path) {
-                categories = try FileStorage.load([Category].self, from: dataURL)
-            }
-            categories.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+            let loaded: [Category] = try await Task.detached { [dataURL] in
+                if FileManager.default.fileExists(atPath: dataURL.path) {
+                    return try FileStorage.load([Category].self, from: dataURL)
+                }
+                return []
+            }.value
+            categories = loaded.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
         } catch {
             print("Load error: \(error)")
         }
     }
 
-    func saveCategories() {
+    func saveCategories() async {
         do {
-            try FileStorage.save(categories, to: dataURL)
-            if iCloudAvailable, let cloud = iCloudURL {
-                try fileManager.createDirectory(at: cloud.deletingLastPathComponent(), withIntermediateDirectories: true)
-                try FileStorage.save(categories, to: cloud.appendingPathComponent("categories.json"))
-            }
+            let cats = categories
+            try await Task.detached { [cats, dataURL, iCloudURL, iCloudAvailable, fileManager] in
+                try FileStorage.save(cats, to: dataURL)
+                if iCloudAvailable, let cloud = iCloudURL {
+                    try fileManager.createDirectory(at: cloud.deletingLastPathComponent(), withIntermediateDirectories: true)
+                    try FileStorage.save(cats, to: cloud.appendingPathComponent("categories.json"))
+                }
+            }.value
         } catch {
             print("Save error: \(error)")
         }
     }
 
-    func addCategory(name: String, icon: String) {
-        let category = Category(name: name, icon: icon)
+    func addCategory(name: String, icon: String, color: String = "blue") {
+        let category = Category(name: name, icon: icon, color: color)
         categories.append(category)
         categories.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
-        saveCategories()
-        createFolder(for: category)
+        Task {
+            await saveCategories()
+            await createFolder(for: category)
+        }
     }
 
     func deleteCategory(at offsets: IndexSet) {
         let removed = offsets.map { categories[$0] }
         categories.remove(atOffsets: offsets)
-        saveCategories()
-        for cat in removed {
-            removeFolder(for: cat)
+        Task {
+            await saveCategories()
+            for cat in removed { await removeFolder(for: cat) }
         }
     }
 
-    func renameCategory(id: UUID, name: String, icon: String) {
+    func renameCategory(id: UUID, name: String, icon: String, color: String) {
         guard let index = categories.firstIndex(where: { $0.id == id }) else { return }
         categories[index].name = name
         categories[index].icon = icon
+        categories[index].color = color
         categories.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
-        saveCategories()
+        Task { await saveCategories() }
+    }
+
+    func moveCategory(from source: IndexSet, to destination: Int) {
+        categories.move(fromOffsets: source, toOffset: destination)
+        Task { await saveCategories() }
     }
 
     private func folderURL(for category: Category) -> URL {
@@ -78,17 +92,19 @@ final class HomeViewModel: ObservableObject {
         categoriesURL.appendingPathComponent(id.uuidString)
     }
 
-    private func createFolder(for category: Category) {
+    private func createFolder(for category: Category) async {
         do {
-            try fileManager.createDirectory(at: folderURL(for: category), withIntermediateDirectories: true)
+            let url = folderURL(for: category)
+            try await Task.detached { try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true) }.value
         } catch {
             print("Folder creation error: \(error)")
         }
     }
 
-    private func removeFolder(for category: Category) {
+    private func removeFolder(for category: Category) async {
         do {
-            try fileManager.removeItem(at: folderURL(for: category))
+            let url = folderURL(for: category)
+            try await Task.detached { try FileManager.default.removeItem(at: url) }.value
         } catch {
             print("Folder remove error: \(error)")
         }
