@@ -1,12 +1,17 @@
 import Foundation
 import SwiftUI
 
+/// Manages the list of categories shown on the Home screen and handles
+/// persistence of category metadata and folders.
+
 final class HomeViewModel: ObservableObject {
     @Published var categories: [Category] = []
     private let fileManager = FileManager.default
     private var categoriesURL: URL {
-        fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("Categories")
+        fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("Categories")
     }
+    private var dataURL: URL { categoriesURL.appendingPathComponent("categories.json") }
 
     init() {
         loadCategories()
@@ -14,11 +19,10 @@ final class HomeViewModel: ObservableObject {
 
     func loadCategories() {
         do {
-            let dataURL = categoriesURL.appendingPathComponent("categories.json")
             if fileManager.fileExists(atPath: dataURL.path) {
-                let data = try Data(contentsOf: dataURL)
-                categories = try JSONDecoder().decode([Category].self, from: data)
+                categories = try FileStorage.load([Category].self, from: dataURL)
             }
+            categories.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
         } catch {
             print("Load error: \(error)")
         }
@@ -26,10 +30,7 @@ final class HomeViewModel: ObservableObject {
 
     func saveCategories() {
         do {
-            try fileManager.createDirectory(at: categoriesURL, withIntermediateDirectories: true)
-            let dataURL = categoriesURL.appendingPathComponent("categories.json")
-            let data = try JSONEncoder().encode(categories)
-            try data.write(to: dataURL)
+            try FileStorage.save(categories, to: dataURL)
         } catch {
             print("Save error: \(error)")
         }
@@ -38,6 +39,7 @@ final class HomeViewModel: ObservableObject {
     func addCategory(name: String, icon: String) {
         let category = Category(name: name, icon: icon)
         categories.append(category)
+        categories.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
         saveCategories()
         createFolder(for: category)
     }
@@ -55,6 +57,7 @@ final class HomeViewModel: ObservableObject {
         guard let index = categories.firstIndex(where: { $0.id == id }) else { return }
         categories[index].name = name
         categories[index].icon = icon
+        categories.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
         saveCategories()
     }
 
