@@ -1,5 +1,6 @@
 import Foundation
 import xlsxwriter
+import os
 
 struct ExcelExporter {
     static func isoDateString(_ date: Date = Date()) -> String {
@@ -28,6 +29,7 @@ struct ExcelExporter {
               headers: ["Trekker", "Rat", "Revs", "Tyd oor toetsafstand", "Pomp", "Druk"],
               to: &worksheet)
 
+        Log.general.info("Excel saved to \(fileURL.path, privacy: .public)")
         return fileURL
     }
 
@@ -68,6 +70,7 @@ struct ExcelExporter {
             rowIndex += 1
         }
 
+        Log.general.info("Excel saved to \(fileURL.path, privacy: .public)")
         return fileURL
     }
 
@@ -102,6 +105,7 @@ struct ExcelExporter {
             rowIndex += 1
         }
 
+        Log.general.info("Excel saved to \(fileURL.path, privacy: .public)")
         return fileURL
     }
 
