@@ -2,7 +2,7 @@
 
 NexusFiles is an example SwiftUI 5 application demonstrating how to collect structured data and export it to Microsoft Excel. The app contains three data-entry forms and ships with a stub share extension for importing files.
 
-The interface is localized in Afrikaans and English. The Home screen automatically populates with several folders useful for agricultural documentation such as "Spuitprogramme" and "MRL".
+The interface is presented in English. The Home screen automatically populates with folders useful for agricultural documentation such as "Spray Programs" and "MRL".
 
 ## Features
 

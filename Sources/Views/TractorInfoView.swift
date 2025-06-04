@@ -7,12 +7,12 @@ struct TractorInfoView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 32) {
-                    PestTable(title: "Plaagbeheer".localized, rows: $vm.pests, addAction: vm.addPestRow, deleteAction: vm.deletePest)
-                    PestTable(title: "Onkruidbeheer".localized, rows: $vm.weeds, addAction: vm.addWeedRow, deleteAction: vm.deleteWeed)
+                    PestTable(title: "Pest Control".localized, rows: $vm.pests, addAction: vm.addPestRow, deleteAction: vm.deletePest)
+                    PestTable(title: "Weed Control".localized, rows: $vm.weeds, addAction: vm.addWeedRow, deleteAction: vm.deleteWeed)
                 }
                 .padding()
             }
-            .navigationTitle("Trekkerinligting".localized)
+            .navigationTitle("Tractor Info".localized)
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Save to Excel".localized) { vm.saveToExcel() }
@@ -55,12 +55,12 @@ private struct PestTable: View {
                                     Image(systemName: "minus.circle.fill")
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
-                                TextField("Trekker".localized, text: $row.trekker).textFieldStyle(.roundedBorder).frame(minWidth: 100)
-                                TextField("Rat".localized, text: $row.rat).textFieldStyle(.roundedBorder).frame(minWidth: 60)
-                                TextField("Revs".localized, text: $row.revs).textFieldStyle(.roundedBorder).frame(minWidth: 60)
-                                TextField("Tyd oor toetsafstand".localized, text: $row.tyd).textFieldStyle(.roundedBorder).frame(minWidth: 150)
-                                TextField("Pomp".localized, text: $row.pomp).textFieldStyle(.roundedBorder).frame(minWidth: 80)
-                                TextField("Druk".localized, text: $row.druk).textFieldStyle(.roundedBorder).frame(minWidth: 80)
+                                TextField("Tractor".localized, text: $row.trekker).textFieldStyle(.roundedBorder).frame(minWidth: 100)
+                                TextField("Gear".localized, text: $row.rat).textFieldStyle(.roundedBorder).frame(minWidth: 60)
+                                TextField("RPM".localized, text: $row.revs).textFieldStyle(.roundedBorder).frame(minWidth: 60)
+                                TextField("Time over distance".localized, text: $row.tyd).textFieldStyle(.roundedBorder).frame(minWidth: 150)
+                                TextField("Pump".localized, text: $row.pomp).textFieldStyle(.roundedBorder).frame(minWidth: 80)
+                                TextField("Pressure".localized, text: $row.druk).textFieldStyle(.roundedBorder).frame(minWidth: 80)
                             }
                         }
                         .onDelete(perform: deleteAction)
@@ -73,12 +73,12 @@ private struct PestTable: View {
     private var header: some View {
         HStack {
             Spacer().frame(width: 24)
-            Text("Trekker".localized).bold().frame(minWidth: 100)
-            Text("Rat".localized).bold().frame(minWidth: 60)
-            Text("Revs".localized).bold().frame(minWidth: 60)
-            Text("Tyd oor toetsafstand".localized).bold().frame(minWidth: 150)
-            Text("Pomp".localized).bold().frame(minWidth: 80)
-            Text("Druk".localized).bold().frame(minWidth: 80)
+            Text("Tractor".localized).bold().frame(minWidth: 100)
+            Text("Gear".localized).bold().frame(minWidth: 60)
+            Text("RPM".localized).bold().frame(minWidth: 60)
+            Text("Time over distance".localized).bold().frame(minWidth: 150)
+            Text("Pump".localized).bold().frame(minWidth: 80)
+            Text("Pressure".localized).bold().frame(minWidth: 80)
         }
         .padding(.vertical, 4)
         .background(Color.secondary.opacity(0.1))

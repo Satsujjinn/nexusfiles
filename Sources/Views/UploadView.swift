@@ -10,7 +10,7 @@ struct UploadView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                Text("Save \(fileURL.lastPathComponent)".localized).font(.headline)
+                Text("Save \(fileURL.lastPathComponent)").font(.headline)
                 Picker("Destination".localized, selection: $selectedCategory) {
                     ForEach(homeVM.categories) { cat in
                         Text(cat.name).tag(Optional(cat))

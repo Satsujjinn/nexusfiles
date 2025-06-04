@@ -44,12 +44,12 @@ final class HomeViewModel: ObservableObject {
 
     private func defaultCategories() -> [Category] {
         [
-            Category(name: "Spuitprogramme".localized, icon: "doc"),
+            Category(name: "Spray Programs".localized, icon: "doc"),
             Category(name: "MRL".localized, icon: "doc.text"),
-            Category(name: "Etikette".localized, icon: "tag"),
-            Category(name: "Kalibrasies".localized, icon: "wrench"),
-            Category(name: "Aanbevelings".localized, icon: "list.bullet.rectangle"),
-            Category(name: "Gewas Inligting".localized, icon: "leaf")
+            Category(name: "Labels".localized, icon: "tag"),
+            Category(name: "Calibrations".localized, icon: "wrench"),
+            Category(name: "Recommendations".localized, icon: "list.bullet.rectangle"),
+            Category(name: "Crop Info".localized, icon: "leaf")
         ]
     }
 
