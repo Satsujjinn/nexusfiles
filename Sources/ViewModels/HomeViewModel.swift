@@ -31,9 +31,25 @@ final class HomeViewModel: ObservableObject {
                 return []
             }.value
             categories = loaded.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+            if categories.isEmpty {
+                categories = defaultCategories()
+                await saveCategories()
+                for cat in categories { await createFolder(for: cat) }
+            }
         } catch {
             print("Load error: \(error)")
         }
+    }
+
+    private func defaultCategories() -> [Category] {
+        [
+            Category(name: "Spuitprogramme".localized, icon: "doc"),
+            Category(name: "MRL".localized, icon: "doc.text"),
+            Category(name: "Etikette".localized, icon: "tag"),
+            Category(name: "Kalibrasies".localized, icon: "wrench"),
+            Category(name: "Aanbevelings".localized, icon: "list.bullet.rectangle"),
+            Category(name: "Gewas Inligting".localized, icon: "leaf")
+        ]
     }
 
     func saveCategories() async {

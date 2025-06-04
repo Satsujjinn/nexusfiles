@@ -64,7 +64,15 @@ struct CategoryView: View {
         }
     }
 
-    private func share(_ url: URL) { shareURL = url }
+    private func share(_ url: URL) {
+        if url.pathExtension.lowercased() == "xlsx" {
+            if let pdfURL = try? PDFExporter.convertExcelToPDF(url: url) {
+                shareURL = pdfURL
+                return
+            }
+        }
+        shareURL = url
+    }
 
     private func uniqueURL(for url: URL) -> URL {
         var dest = baseURL.appendingPathComponent(url.lastPathComponent)
