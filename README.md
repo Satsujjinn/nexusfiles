@@ -23,8 +23,15 @@ The interface is localized in Afrikaans and English. The Home screen automatical
 ## Getting Started
 
 1. Clone this repository.
-2. Open `Package.swift` in Xcode 17.3 or newer.
-3. Build and run the `NexusFiles` target on an iOS 17 simulator or device.
+2. Install libxlsxwriter using Homebrew:
+   ```bash
+   brew install libxlsxwriter
+   ```
+3. Open `Package.swift` in Xcode 17.3 or newer.
+4. Build and run the `NexusFiles` target on an iOS 17 simulator or device.
+
+To run the unit tests in Xcode select **Product ▸ Test** or run `swift test` from
+the command line (requires the dependencies above).
 
 The app presents three tabs—Tractor Information, Calibration, and Recommendation—where you can enter data. The toolbar allows you to save the data as an Excel file or share it using the system share sheet.
 
