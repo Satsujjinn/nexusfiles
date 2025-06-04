@@ -9,7 +9,7 @@ NexusFiles is an example SwiftUI 5 application demonstrating how to collect stru
 - **Recommendation** – create chemical recommendation lists.
 - **Excel Export** – generate `.xlsx` files using [xlsxwriter.swift](https://github.com/damuellen/xlsxwriter.swift).
 - **Share Extension Stub** – placeholder for handling incoming Excel or CSV files.
-- **Home File Manager** – organize documents into categories and browse them from a green-themed home screen.
+- **Home File Manager** – organize documents into categories, rename them, and quickly locate folders using search from a green-themed home screen.
 
 ## Requirements
 
