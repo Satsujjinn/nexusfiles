@@ -51,6 +51,13 @@ final class HomeViewModel: ObservableObject {
         }
     }
 
+    func renameCategory(id: UUID, name: String, icon: String) {
+        guard let index = categories.firstIndex(where: { $0.id == id }) else { return }
+        categories[index].name = name
+        categories[index].icon = icon
+        saveCategories()
+    }
+
     private func folderURL(for category: Category) -> URL {
         categoriesURL.appendingPathComponent(category.id.uuidString)
     }
