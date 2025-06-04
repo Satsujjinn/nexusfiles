@@ -1,6 +1,5 @@
 import Foundation
 import xlsxwriter
-import UIKit
 
 struct ExcelExporter {
     static func isoDateString(_ date: Date = Date()) -> String {
