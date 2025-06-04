@@ -12,6 +12,16 @@ struct HomeView: View {
     @State private var editColor = "blue"
     @State private var editingCategory: Category?
     @State private var showEdit = false
+    private let colorOptions: [(name: String, color: Color)] = [
+        ("blue", .blue),
+        ("green", .green),
+        ("red", .red),
+        ("orange", .orange),
+        ("purple", .purple),
+        ("pink", .pink),
+        ("gray", .gray),
+        ("yellow", .yellow)
+    ]
 
     var body: some View {
         NavigationStack {
@@ -70,7 +80,17 @@ struct HomeView: View {
                     Form {
                         TextField("Name".localized, text: $newName)
                         TextField("Icon".localized, text: $newIcon)
-                        TextField("Color".localized, text: $newColor)
+                        Picker("Color".localized, selection: $newColor) {
+                            ForEach(colorOptions, id: \.name) { option in
+                                HStack {
+                                    Circle()
+                                        .fill(option.color)
+                                        .frame(width: 16, height: 16)
+                                    Text(option.name.capitalized)
+                                }
+                                .tag(option.name)
+                            }
+                        }
                     }
                     .navigationTitle("New Category".localized)
                     .toolbar {
@@ -95,7 +115,17 @@ struct HomeView: View {
                     Form {
                         TextField("Name".localized, text: $editName)
                         TextField("Icon".localized, text: $editIcon)
-                        TextField("Color".localized, text: $editColor)
+                        Picker("Color".localized, selection: $editColor) {
+                            ForEach(colorOptions, id: \.name) { option in
+                                HStack {
+                                    Circle()
+                                        .fill(option.color)
+                                        .frame(width: 16, height: 16)
+                                    Text(option.name.capitalized)
+                                }
+                                .tag(option.name)
+                            }
+                        }
                     }
                     .navigationTitle("Edit Category".localized)
                     .toolbar {
