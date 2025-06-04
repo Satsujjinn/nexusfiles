@@ -17,6 +17,8 @@ NexusFiles is an example SwiftUI 5 application demonstrating how to collect stru
 - Xcode 17.3
 - iOS 17 SDK
 - [Libxlsxwriter](https://libxlsxwriter.github.io/getting_started.html) installed on your system
+  - macOS (Homebrew): `brew install libxlsxwriter`
+  - Ubuntu/Debian: `apt-get install libxlsxwriter-dev`
 
 ## Getting Started
 
