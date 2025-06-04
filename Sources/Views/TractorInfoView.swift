@@ -24,6 +24,7 @@ struct TractorInfoView: View {
                 ActivityView(activityItems: [url])
             }
             .onDisappear { vm.saveDraft() }
+            .applyAppTheme()
         }
     }
 }

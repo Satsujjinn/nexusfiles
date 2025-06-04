@@ -41,7 +41,7 @@ struct HomeView: View {
                 }
                 .padding()
             }
-            .background(Color.green.opacity(0.1))
+            .background(Color.white)
             .navigationTitle("NexusFiles".localized)
             .searchable(text: $searchText, prompt: "Search Categories".localized) {
                 if searchText.isEmpty {
@@ -122,5 +122,6 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .applyAppTheme()
     }
 }

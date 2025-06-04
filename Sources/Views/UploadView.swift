@@ -27,6 +27,7 @@ struct UploadView: View {
             .padding()
             .navigationTitle("Upload".localized)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel".localized) { dismiss() } } }
+            .applyAppTheme()
         }
     }
 

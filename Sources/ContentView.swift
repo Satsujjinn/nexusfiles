@@ -10,5 +10,6 @@ struct ContentView: View {
             RecommendationView()
                 .tabItem { Label("Aanbeveling", systemImage: "checklist") }
         }
+        .applyAppTheme()
     }
 }
