@@ -45,7 +45,7 @@ let package = Package(
         .executable(name: "NexusFilesMac", targets: ["NexusFilesMac"])
     ],
     dependencies: [
-        .package(url: "https://github.com/damuellen/xlsxwriter.swift", from: "1.0.0"),
+        .package(url: "https://github.com/damuellen/xlsxwriter.swift", branch: "main"),
         .package(url: "https://github.com/CoreOffice/CoreXLSX.git", from: "0.9.0"),
         .package(url: "https://github.com/swiftcsv/SwiftCSV.git", from: "0.6.0")
     ],
