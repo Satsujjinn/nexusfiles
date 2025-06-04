@@ -39,6 +39,10 @@ The app presents three tabs—Tractor Information, Calibration, and Recommendati
 
 Building on Linux requires the `libxlsxwriter` development package. However, the share extension uses UIKit, which is not available on Linux, so building the `NexusFilesShareExtension` target will fail. Use macOS with Xcode for the complete experience.
 
+### Continuous Integration
+
+GitHub Actions automatically run `swift test` for all pushes and pull requests using macOS runners. See `.github/workflows/swift.yml` for details.
+
 ## Exporting Data
 
 The exported Excel files are saved to the app's documents directory. Each file name includes an ISO‑8601 timestamp for easy organization. Files can be shared directly from the app using the standard iOS share sheet.

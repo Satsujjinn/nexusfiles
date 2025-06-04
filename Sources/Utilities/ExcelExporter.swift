@@ -1,6 +1,12 @@
 import Foundation
-import xlsxwriter
 import os
+#if canImport(xlsxwriter)
+import xlsxwriter
+#endif
+
+enum ExcelExporterError: Error {
+    case libraryUnavailable
+}
 
 struct ExcelExporter {
     static func isoDateString(_ date: Date = Date()) -> String {
@@ -14,6 +20,7 @@ struct ExcelExporter {
         return docs.appendingPathComponent(filename)
     }
 
+#if canImport(xlsxwriter)
     static func exportTractorInfo(pestRows: [PestRow], weedRows: [WeedRow]) throws -> URL {
         let fileURL = documentsURL(filename: "NexusFiles_TractorInfo_\(isoDateString()).xlsx")
         let workbook = Workbook(fileURL.path)
@@ -73,7 +80,6 @@ struct ExcelExporter {
         Log.general.info("Excel saved to \(fileURL.path, privacy: .public)")
         return fileURL
     }
-
     static func exportRecommendation(metadata: RecommendationMetadata, rows: [RecommendationRow]) throws -> URL {
         let fileURL = documentsURL(filename: "NexusFiles_Recommendation_\(isoDateString()).xlsx")
         let workbook = Workbook(fileURL.path)
@@ -119,6 +125,19 @@ struct ExcelExporter {
             }
         }
     }
+#else
+    static func exportTractorInfo(pestRows: [PestRow], weedRows: [WeedRow]) throws -> URL {
+        throw ExcelExporterError.libraryUnavailable
+    }
+
+    static func exportCalibration(metadata: CalibrationMetadata, rows: [CalibrationRow]) throws -> URL {
+        throw ExcelExporterError.libraryUnavailable
+    }
+
+    static func exportRecommendation(metadata: RecommendationMetadata, rows: [RecommendationRow]) throws -> URL {
+        throw ExcelExporterError.libraryUnavailable
+    }
+#endif
 }
 
 struct ActivityView: UIViewControllerRepresentable {
