@@ -78,9 +78,22 @@ cc myexcel.c -o myexcel -I/usr/local/include -L/usr/local/lib -lxlsxwriter
 
 ### Running on Linux
 
+NexusFiles depends on SwiftUI for its graphical interface, so the macOS app is
+not available on Linux. The command line utilities can still be built and run
+using Swift Package Manager. After installing Swift, build the package and run
+the desired subcommand:
 
+```bash
+swift build
+swift run nexusfiles export-calibration meta.json rows.json
+```
 
-The exported Excel files are saved to the app's documents directory. Each file name includes an ISO‑8601 timestamp for easy organization. Files can be shared directly from the app using the standard iOS share sheet.
+Replace the subcommand with `export-tractor-info` or
+`export-recommendation` to generate the other Excel file types.
+
+The exported Excel files are saved to the app's documents directory. Each file
+name includes an ISO‑8601 timestamp for easy organization. Files can be shared
+directly from the app using the standard iOS share sheet.
 
 ### Persistent categories
 
