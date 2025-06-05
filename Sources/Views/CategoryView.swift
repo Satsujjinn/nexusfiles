@@ -8,6 +8,7 @@ struct CategoryView: View {
     @State private var importURL: URL?
     @State private var shareURL: URL?
     @State private var previewURL: URL?
+    @State private var editURL: URL?
     @State private var isSaving = false
 
     var body: some View {
@@ -18,8 +19,9 @@ struct CategoryView: View {
                     Text(url.lastPathComponent)
                         .onTapGesture {
                             if !url.hasDirectoryPath {
-                                if url.pathExtension.lowercased() == "xlsx",
-                                   let pdf = try? PDFExporter.convertExcelToPDF(url: url) {
+                                if url.pathExtension.lowercased() == "xlsx" {
+                                    editURL = url
+                                } else if let pdf = try? PDFExporter.convertExcelToPDF(url: url) {
                                     previewURL = pdf
                                 } else {
                                     previewURL = url
@@ -52,6 +54,7 @@ struct CategoryView: View {
         }
         .sheet(item: $shareURL) { url in ActivityView(activityItems: [url]) }
         .sheet(item: $previewURL) { url in QuickLookPreview(url: url) }
+        .sheet(item: $editURL) { url in SpreadsheetEditorView(url: url) }
         .overlay(Group { if isSaving { ProgressView().progressViewStyle(.circular) } })
     }
 
