@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct NexusFilesApp: App {
+struct NexusFiles2025App: App {
     var body: some Scene {
         WindowGroup {
             HomeView()

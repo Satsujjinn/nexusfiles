@@ -16,7 +16,16 @@ struct CategoryView: View {
                 HStack {
                     Image(systemName: url.hasDirectoryPath ? "folder" : "doc")
                     Text(url.lastPathComponent)
-                        .onTapGesture { if !url.hasDirectoryPath { previewURL = url } }
+                        .onTapGesture {
+                            if !url.hasDirectoryPath {
+                                if url.pathExtension.lowercased() == "xlsx",
+                                   let pdf = try? PDFExporter.convertExcelToPDF(url: url) {
+                                    previewURL = pdf
+                                } else {
+                                    previewURL = url
+                                }
+                            }
+                        }
                     Spacer()
                     if !url.hasDirectoryPath {
                         Button(action: { share(url) }) { Image(systemName: "square.and.arrow.up") }

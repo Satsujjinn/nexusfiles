@@ -39,7 +39,7 @@ let package = Package(
     name: "NexusFiles",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v17), .macOS(.v14)
+        .iOS("19"), .macOS("15")
     ],
     products: [
         .library(name: "NexusFiles", targets: ["NexusFiles"]),
