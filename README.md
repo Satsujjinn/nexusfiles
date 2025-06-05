@@ -26,7 +26,39 @@ The interface is presented in English. The Home screen automatically populates w
 To run the unit tests in Xcode select **Product ▸ Test** or run `swift test` from
 the command line (requires the dependencies above).
 
+
 The app presents three tabs—Tractor Information, Calibration, and Recommendation—where you can enter data. The toolbar allows you to save the data as an Excel file or share it using the system share sheet.
+
+### Install using CocoaPods for Xcode
+
+For iOS and macOS projects in Xcode you can install `libxlsxwriter` using CocoaPods.
+
+Add the following entry to your **Podfile**:
+
+```ruby
+pod 'libxlsxwriter', '~> 0.9'
+```
+
+If you are using Swift, you can now add an import:
+
+```swift
+import xlsxwriter
+```
+
+And call its C functions like this:
+
+```swift
+let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+let fileURL = documentDirectory.appendingPathComponent("hello_world.xlsx")
+
+let workbook = workbook_new((fileURL.absoluteString.dropFirst(6) as NSString).fileSystemRepresentation)
+let worksheet = workbook_add_worksheet(workbook, nil)
+worksheet_write_string(worksheet, 0, 0, "Hello", nil)
+worksheet_write_number(worksheet, 1, 0, 123, nil)
+workbook_close(workbook)
+```
+
+For a sample Xcode project that uses the `libxlsxwriter` cocoapod for iOS and macOS with Objective‑C and Swift see **libxlsxwriter Cocoa Examples** or **LibXlsxWriterSwiftSample**.
 
 ### Running on Linux
 
