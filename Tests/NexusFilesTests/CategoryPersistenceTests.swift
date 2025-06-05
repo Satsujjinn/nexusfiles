@@ -42,4 +42,22 @@ final class CategoryPersistenceTests: XCTestCase {
             vm.deleteCategory(at: IndexSet(integer: idx))
         }
     }
+
+    func testItemCountMatchesFiles() async throws {
+        let vm = HomeViewModel()
+        vm.addCategory(name: "CountTest", icon: "folder")
+        try await Task.sleep(nanoseconds: 100_000_000)
+        guard let cat = vm.categories.first(where: { $0.name == "CountTest" }) else {
+            XCTFail("Category not found")
+            return
+        }
+        let fileURL = vm.folderURL(for: cat.id).appendingPathComponent("dummy.txt")
+        FileManager.default.createFile(atPath: fileURL.path, contents: Data())
+        await Task.yield()
+        XCTAssertEqual(vm.itemCount(for: cat), 1)
+        try? FileManager.default.removeItem(at: fileURL)
+        if let idx = vm.categories.firstIndex(where: { $0.id == cat.id }) {
+            vm.deleteCategory(at: IndexSet(integer: idx))
+        }
+    }
 }

@@ -1,6 +1,6 @@
 # NexusFiles 2025
 
-NexusFiles 2025 showcases a SwiftUI 6 workflow for collecting structured data and exporting it to Microsoft Excel. The app contains three data-entry forms and includes a share extension for importing files.
+NexusFiles 2025 showcases a SwiftUI 6 workflow for collecting structured data and exporting it to Microsoft Excel. The app contains three data-entry forms and includes a share extension for importing files. While a minimal macOS build and CLI are provided, the primary experience is designed for iPhone.
 
 The interface is presented in English. The Home screen automatically populates with folders useful for agricultural documentation such as "Spray Programs" and "MRL".
 
@@ -12,6 +12,7 @@ The interface is presented in English. The Home screen automatically populates w
 - **Excel Export** – generate `.xlsx` files using [xlsxwriter.swift](https://github.com/damuellen/xlsxwriter.swift).
 - **Share Extension Stub** – placeholder for handling incoming Excel or CSV files.
 - **Home File Manager** – organize documents into categories, rename them (with duplicate name protection), and quickly locate folders using search from a green-themed home screen.
+- **Category Counts** – each folder on the Home screen now shows how many documents it contains.
 
 ## Requirements
 

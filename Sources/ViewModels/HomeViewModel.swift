@@ -118,6 +118,18 @@ final class HomeViewModel: ObservableObject {
         categoriesURL.appendingPathComponent(id.uuidString)
     }
 
+    /// Returns the number of files stored in the given category's folder.
+    /// Hidden files are ignored so the count matches what users see in the app.
+    func itemCount(for category: Category) -> Int {
+        let url = folderURL(for: category.id)
+        let contents = try? FileManager.default.contentsOfDirectory(
+            at: url,
+            includingPropertiesForKeys: nil,
+            options: [.skipsHiddenFiles]
+        )
+        return contents?.count ?? 0
+    }
+
     private func createFolder(for category: Category) async {
         do {
             let url = folderURL(for: category)
