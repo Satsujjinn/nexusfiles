@@ -122,6 +122,14 @@ swift run nexusfiles export-calibration meta.json rows.json
 
 Replace `export-calibration` with `export-tractor-info` or `export-recommendation` for the other form types. Each command prints the path to the generated Excel file.
 
+To convert an existing Excel file to a PDF you can run:
+
+```bash
+swift run nexusfiles convert-pdf MySheet.xlsx
+```
+
+The command copies `MySheet.xlsx` to a new `.pdf` file at the same location.
+
 ## Contributing
 
 Contributions are welcome. Please open issues or pull requests on GitHub. All code is expected to follow Swift style conventions and include clear commit messages.

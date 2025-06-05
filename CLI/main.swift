@@ -5,7 +5,7 @@ import NexusFiles
 struct NexusFilesCLI: ParsableCommand {
     static var configuration = CommandConfiguration(
         abstract: "Command line tools for NexusFiles",
-        subcommands: [ExportTractorInfo.self, ExportCalibration.self, ExportRecommendation.self])
+        subcommands: [ExportTractorInfo.self, ExportCalibration.self, ExportRecommendation.self, ConvertPDF.self])
 }
 
 struct ExportTractorInfo: ParsableCommand {
@@ -56,5 +56,17 @@ struct ExportRecommendation: ParsableCommand {
         let rows = try decoder.decode([RecommendationRow].self, from: Data(contentsOf: URL(fileURLWithPath: rowsFile)))
         let url = try ExcelExporter.exportRecommendation(metadata: metaData, rows: rows)
         print("Excel exported to \(url.path)")
+    }
+}
+
+struct ConvertPDF: ParsableCommand {
+    static var configuration = CommandConfiguration(abstract: "Convert Excel file to PDF")
+
+    @Argument(help: "Path to Excel file")
+    var excel: String
+
+    func run() throws {
+        let url = try PDFExporter.convertExcelToPDF(url: URL(fileURLWithPath: excel))
+        print("PDF exported to \(url.path)")
     }
 }
