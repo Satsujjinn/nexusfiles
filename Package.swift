@@ -18,6 +18,14 @@ var targets: [Target] = [
         dependencies: ["NexusFiles"],
         path: "MacApp"
     ),
+    .executableTarget(
+        name: "NexusFilesCLI",
+        dependencies: [
+            "NexusFiles",
+            .product(name: "ArgumentParser", package: "swift-argument-parser")
+        ],
+        path: "CLI"
+    ),
     .testTarget(
         name: "NexusFilesTests",
         dependencies: ["NexusFiles"],
@@ -43,13 +51,15 @@ let package = Package(
     ],
     products: [
         .library(name: "NexusFiles", targets: ["NexusFiles"]),
-        .executable(name: "NexusFilesMac", targets: ["NexusFilesMac"])
+        .executable(name: "NexusFilesMac", targets: ["NexusFilesMac"]),
+        .executable(name: "nexusfiles", targets: ["NexusFilesCLI"])
     ],
     dependencies: [
         .package(url: "https://github.com/damuellen/xlsxwriter.swift", branch: "main"),
         .package(url: "https://github.com/CoreOffice/CoreXLSX.git", from: "0.9.0"),
         .package(url: "https://github.com/swiftcsv/SwiftCSV.git", from: "0.6.0"),
-        .package(url: "https://github.com/weichsel/ZIPFoundation.git", branch: "feature/swift6")
+        .package(url: "https://github.com/weichsel/ZIPFoundation.git", branch: "feature/swift6"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.3.0")
     ],
     targets: targets
 )

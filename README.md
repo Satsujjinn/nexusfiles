@@ -90,6 +90,18 @@ Categories created on the Home screen are saved as JSON in the app's documents d
 
 If iCloud is available, NexusFiles 2025 copies saved categories and form drafts to your iCloud container so data is shared across your devices. Ensure you are logged into iCloud before running the app.
 
+## Command Line Usage
+
+This package also includes a CLI tool built with [swift-argument-parser](https://github.com/apple/swift-argument-parser). It lets you generate Excel files from JSON data without opening the app.
+
+Build and run the CLI:
+
+```bash
+swift run nexusfiles export-calibration meta.json rows.json
+```
+
+Replace `export-calibration` with `export-tractor-info` or `export-recommendation` for the other form types. Each command prints the path to the generated Excel file.
+
 ## Contributing
 
 Contributions are welcome. Please open issues or pull requests on GitHub. All code is expected to follow Swift style conventions and include clear commit messages.
