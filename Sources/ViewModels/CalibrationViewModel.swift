@@ -41,6 +41,16 @@ final class CalibrationViewModel: ObservableObject {
         rows.removeAll()
     }
 
+    func importData(from url: URL) {
+        do {
+            let (meta, rows) = try DataImporter.parseCalibration(url: url)
+            self.metadata = meta
+            self.rows = rows
+        } catch {
+            print("Import error: \(error)")
+        }
+    }
+
     private func loadDraft() {
         if let draft = storage.load() {
             metadata = draft.metadata

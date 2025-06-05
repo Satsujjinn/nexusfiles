@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CalibrationView: View {
     @StateObject private var vm = CalibrationViewModel()
+    @State private var showImport = false
 
     var body: some View {
         NavigationStack {
@@ -15,12 +16,18 @@ struct CalibrationView: View {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     Button("Save to Excel".localized) { vm.saveToExcel() }
                     Button("Share".localized) { vm.shareFile() }
+                    Button("Import".localized) { showImport = true }
                     Button(action: vm.addRow) { Image(systemName: "plus") }
                     Button("Clear".localized) { vm.clearDraft() }
                 }
             }
             .sheet(item: $vm.shareURL) { url in
                 ActivityView(activityItems: [url])
+            }
+            .fileImporter(isPresented: $showImport, allowedContentTypes: [.data]) { result in
+                if case let .success(urls) = result, let first = urls.first {
+                    vm.importData(from: first)
+                }
             }
             .onDisappear { vm.saveDraft() }
             .applyAppTheme()
