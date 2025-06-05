@@ -5,7 +5,6 @@ var targets: [Target] = [
     .target(
         name: "NexusFiles",
         dependencies: [
-            .product(name: "xlsxwriter", package: "xlsxwriter.swift"),
             "CoreXLSX",
             "SwiftCSV",
             "ZIPFoundation"
@@ -55,7 +54,6 @@ let package = Package(
         .executable(name: "nexusfiles", targets: ["NexusFilesCLI"])
     ],
     dependencies: [
-        .package(url: "https://github.com/damuellen/xlsxwriter.swift", branch: "main"),
         .package(url: "https://github.com/CoreOffice/CoreXLSX.git", from: "0.9.0"),
         .package(url: "https://github.com/swiftcsv/SwiftCSV.git", from: "0.6.0"),
         .package(url: "https://github.com/weichsel/ZIPFoundation.git", branch: "feature/swift6"),

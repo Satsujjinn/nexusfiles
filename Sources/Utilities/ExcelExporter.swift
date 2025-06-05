@@ -1,5 +1,4 @@
 import Foundation
-import xlsxwriter
 import os
 
 struct ExcelExporter {
@@ -15,109 +14,50 @@ struct ExcelExporter {
     }
 
     static func exportTractorInfo(pestRows: [PestRow], weedRows: [WeedRow]) throws -> URL {
-        let fileURL = documentsURL(filename: "NexusFiles2025_TractorInfo_\(isoDateString()).xlsx")
-        let workbook = Workbook(fileURL.path)
-        defer { workbook.close() }
-
-        var worksheet = workbook.addWorksheet(name: "Pest Control")
-        write(rows: pestRows.map { [$0.trekker, $0.rat, $0.revs, $0.tyd, $0.pomp, $0.druk] },
-              headers: ["Tractor", "Gear", "RPM", "Time over distance", "Pump", "Pressure"],
-              to: &worksheet)
-
-        worksheet = workbook.addWorksheet(name: "Weed Control")
-        write(rows: weedRows.map { [$0.trekker, $0.rat, $0.revs, $0.tyd, $0.pomp, $0.druk] },
-              headers: ["Tractor", "Gear", "RPM", "Time over distance", "Pump", "Pressure"],
-              to: &worksheet)
-
-        Log.general.info("Excel saved to \(fileURL.path, privacy: .public)")
+        let fileURL = documentsURL(filename: "NexusFiles2025_TractorInfo_\(isoDateString()).csv")
+        let headers = ["Trekker", "Rat", "Revs", "Tyd", "Pomp", "Druk"]
+        var rows: [[String]] = pestRows.map { [$0.trekker, $0.rat, $0.revs, $0.tyd, $0.pomp, $0.druk] }
+        rows.append(contentsOf: weedRows.map { [$0.trekker, $0.rat, $0.revs, $0.tyd, $0.pomp, $0.druk] })
+        let csv = makeCSV(rows: rows, headers: headers)
+        try csv.write(to: fileURL, atomically: true, encoding: .utf8)
+        Log.general.info("CSV saved to \(fileURL.path, privacy: .public)")
         return fileURL
     }
 
     static func exportCalibration(metadata: CalibrationMetadata, rows: [CalibrationRow]) throws -> URL {
-        let fileURL = documentsURL(filename: "NexusFiles2025_Calibration_\(isoDateString()).xlsx")
-        let workbook = Workbook(fileURL.path)
-        defer { workbook.close() }
-
-        var sheet = workbook.addWorksheet(name: "Calibration")
-        var rowIndex = 0
-        sheet.writeString(row: rowIndex, column: 0, string: "Producer")
-        sheet.writeString(row: rowIndex, column: 1, string: metadata.producer)
-        rowIndex += 1
-        sheet.writeString(row: rowIndex, column: 0, string: "Farm")
-        sheet.writeString(row: rowIndex, column: 1, string: metadata.farm)
-        rowIndex += 1
-        sheet.writeString(row: rowIndex, column: 0, string: "Date")
-        sheet.writeString(row: rowIndex, column: 1, string: isoDateString(metadata.selectedDate))
-        rowIndex += 1
-        sheet.writeString(row: rowIndex, column: 0, string: "Agent")
-        sheet.writeString(row: rowIndex, column: 1, string: metadata.agentName)
-        rowIndex += 1
-        sheet.writeString(row: rowIndex, column: 0, string: "Crop")
-        sheet.writeString(row: rowIndex, column: 1, string: metadata.crop)
-        rowIndex += 2
-
+        let fileURL = documentsURL(filename: "NexusFiles2025_Calibration_\(isoDateString()).csv")
+        var csv = "Producer,\(metadata.producer)\n"
+        csv += "Farm,\(metadata.farm)\n"
+        csv += "Date,\(isoDateString(metadata.selectedDate))\n"
+        csv += "Agent,\(metadata.agentName)\n"
+        csv += "Crop,\(metadata.crop)\n\n"
         let headers = ["Tractor", "Gear", "RPM", "Time over distance", "Pump", "Pressure", "Nozzles", "Nozzle Type", "Output (L/ha)", "Water"]
-        for (i, header) in headers.enumerated() {
-            sheet.writeString(row: rowIndex, column: lxw_col_t(i), string: header)
-        }
-        rowIndex += 1
-
-        for r in rows {
-            let values = [r.trekker, r.rat, r.revs, r.tyd, r.pomp, r.druk, r.aantalSputkoppe, r.tipeSputkop, r.lewering, r.water]
-            for (c, v) in values.enumerated() {
-                sheet.writeString(row: rowIndex, column: lxw_col_t(c), string: v)
-            }
-            rowIndex += 1
-        }
-
-        Log.general.info("Excel saved to \(fileURL.path, privacy: .public)")
+        let data = rows.map { [ $0.trekker, $0.rat, $0.revs, $0.tyd, $0.pomp, $0.druk, $0.aantalSputkoppe, $0.tipeSputkop, $0.lewering, $0.water ] }
+        csv += makeCSV(rows: data, headers: headers)
+        try csv.write(to: fileURL, atomically: true, encoding: .utf8)
+        Log.general.info("CSV saved to \(fileURL.path, privacy: .public)")
         return fileURL
     }
 
     static func exportRecommendation(metadata: RecommendationMetadata, rows: [RecommendationRow]) throws -> URL {
-        let fileURL = documentsURL(filename: "NexusFiles2025_Recommendation_\(isoDateString()).xlsx")
-        let workbook = Workbook(fileURL.path)
-        defer { workbook.close() }
-
-        var sheet = workbook.addWorksheet(name: "Recommendation")
-        var rowIndex = 0
-        sheet.writeString(row: rowIndex, column: 0, string: "Farm")
-        sheet.writeString(row: rowIndex, column: 1, string: metadata.farm)
-        rowIndex += 1
-        sheet.writeString(row: rowIndex, column: 0, string: "Agent")
-        sheet.writeString(row: rowIndex, column: 1, string: metadata.agentName)
-        rowIndex += 1
-        sheet.writeString(row: rowIndex, column: 0, string: "Date")
-        sheet.writeString(row: rowIndex, column: 1, string: isoDateString(metadata.selectedDate))
-        rowIndex += 2
-
+        let fileURL = documentsURL(filename: "NexusFiles2025_Recommendation_\(isoDateString()).csv")
+        var csv = "Farm,\(metadata.farm)\n"
+        csv += "Agent,\(metadata.agentName)\n"
+        csv += "Date,\(isoDateString(metadata.selectedDate))\n\n"
         let headers = ["Crop", "Target", "Product", "Active", "Dose/100 L", "Dose/Ten K", "OHP", "Notes"]
-        for (i, header) in headers.enumerated() {
-            sheet.writeString(row: rowIndex, column: lxw_col_t(i), string: header)
-        }
-        rowIndex += 1
-
-        for r in rows {
-            let values = [r.gewas, r.teiken, r.produk, r.aktief, r.dosis100LT, r.dosisTenK, r.ohp, r.opmerkings]
-            for (c, v) in values.enumerated() {
-                sheet.writeString(row: rowIndex, column: lxw_col_t(c), string: v)
-            }
-            rowIndex += 1
-        }
-
-        Log.general.info("Excel saved to \(fileURL.path, privacy: .public)")
+        let data = rows.map { [ $0.gewas, $0.teiken, $0.produk, $0.aktief, $0.dosis100LT, $0.dosisTenK, $0.ohp, $0.opmerkings ] }
+        csv += makeCSV(rows: data, headers: headers)
+        try csv.write(to: fileURL, atomically: true, encoding: .utf8)
+        Log.general.info("CSV saved to \(fileURL.path, privacy: .public)")
         return fileURL
     }
 
-    private static func write(rows: [[String]], headers: [String], to sheet: inout Worksheet) {
-        for (i, header) in headers.enumerated() {
-            sheet.writeString(row: 0, column: lxw_col_t(i), string: header)
+    private static func makeCSV(rows: [[String]], headers: [String]) -> String {
+        var csv = headers.joined(separator: ",") + "\n"
+        for row in rows {
+            csv += row.joined(separator: ",") + "\n"
         }
-        for (rowIndex, row) in rows.enumerated() {
-            for (colIndex, value) in row.enumerated() {
-                sheet.writeString(row: rowIndex + 1, column: lxw_col_t(colIndex), string: value)
-            }
-        }
+        return csv
     }
 }
 
