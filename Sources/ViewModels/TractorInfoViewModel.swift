@@ -6,13 +6,7 @@ final class TractorInfoViewModel: ObservableObject {
     @Published var weeds: [WeedRow] = []
     @Published var shareURL: URL?
 
-    private var draftURL: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("TractorInfoDraft.json")
-    }
-    private var iCloudURL: URL? {
-        FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("TractorInfoDraft.json")
-    }
+    private let storage = DraftStorage<Draft>(fileName: "TractorInfoDraft.json")
 
     struct Draft: Codable {
         var pests: [PestRow]
@@ -32,15 +26,14 @@ final class TractorInfoViewModel: ObservableObject {
     func saveToExcel() {
         do {
             shareURL = try ExcelExporter.exportTractorInfo(pestRows: pests, weedRows: weeds)
-            try FileStorage.save(Draft(pests: pests, weeds: weeds), to: draftURL)
+            storage.save(Draft(pests: pests, weeds: weeds))
         } catch {
             print("Save error: \(error)")
         }
     }
 
     func saveDraft() {
-        try? FileStorage.save(Draft(pests: pests, weeds: weeds), to: draftURL)
-        if let cloud = iCloudURL { try? FileStorage.save(Draft(pests: pests, weeds: weeds), to: cloud) }
+        storage.save(Draft(pests: pests, weeds: weeds))
     }
 
     func shareFile() {
@@ -48,21 +41,15 @@ final class TractorInfoViewModel: ObservableObject {
     }
 
     func clearDraft() {
-        try? FileManager.default.removeItem(at: draftURL)
-        if let cloud = iCloudURL { try? FileManager.default.removeItem(at: cloud) }
+        storage.clear()
         pests.removeAll()
         weeds.removeAll()
     }
 
     private func loadDraft() {
-        do {
-            if FileManager.default.fileExists(atPath: draftURL.path) {
-                let draft = try FileStorage.load(Draft.self, from: draftURL)
-                pests = draft.pests
-                weeds = draft.weeds
-            }
-        } catch {
-            print("Load error: \(error)")
+        if let draft = storage.load() {
+            pests = draft.pests
+            weeds = draft.weeds
         }
     }
 }

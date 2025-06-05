@@ -6,13 +6,7 @@ final class RecommendationViewModel: ObservableObject {
     @Published var rows: [RecommendationRow] = []
     @Published var shareURL: URL?
 
-    private var draftURL: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("RecommendationDraft.json")
-    }
-    private var iCloudURL: URL? {
-        FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("RecommendationDraft.json")
-    }
+    private let storage = DraftStorage<Draft>(fileName: "RecommendationDraft.json")
 
     struct Draft: Codable {
         var metadata: RecommendationMetadata
@@ -29,35 +23,28 @@ final class RecommendationViewModel: ObservableObject {
     func saveToExcel() {
         do {
             shareURL = try ExcelExporter.exportRecommendation(metadata: metadata, rows: rows)
-            try FileStorage.save(Draft(metadata: metadata, rows: rows), to: draftURL)
+            storage.save(Draft(metadata: metadata, rows: rows))
         } catch {
             print("Save error: \(error)")
         }
     }
 
     func saveDraft() {
-        try? FileStorage.save(Draft(metadata: metadata, rows: rows), to: draftURL)
-        if let cloud = iCloudURL { try? FileStorage.save(Draft(metadata: metadata, rows: rows), to: cloud) }
+        storage.save(Draft(metadata: metadata, rows: rows))
     }
 
     func shareFile() { if shareURL == nil { saveToExcel() } }
 
     func clearDraft() {
-        try? FileManager.default.removeItem(at: draftURL)
-        if let cloud = iCloudURL { try? FileManager.default.removeItem(at: cloud) }
+        storage.clear()
         metadata = RecommendationMetadata()
         rows.removeAll()
     }
 
     private func loadDraft() {
-        do {
-            if FileManager.default.fileExists(atPath: draftURL.path) {
-                let draft = try FileStorage.load(Draft.self, from: draftURL)
-                metadata = draft.metadata
-                rows = draft.rows
-            }
-        } catch {
-            print("Load error: \(error)")
+        if let draft = storage.load() {
+            metadata = draft.metadata
+            rows = draft.rows
         }
     }
 }
