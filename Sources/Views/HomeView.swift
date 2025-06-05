@@ -29,7 +29,7 @@ struct HomeView: View {
                 LazyVStack(spacing: 16) {
                     ForEach(vm.categories.filter { searchText.isEmpty || $0.name.localizedCaseInsensitiveContains(searchText) }) { category in
                         NavigationLink(destination: CategoryView(category: category, baseURL: vm.folderURL(for: category.id))) {
-                            Label(category.name, systemImage: category.icon)
+                            Label("\(category.name) (\(vm.itemCount(for: category)))", systemImage: category.icon)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
                                 .background(Color(category.color))
