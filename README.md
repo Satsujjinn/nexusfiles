@@ -22,9 +22,10 @@ The interface is presented in English. The Home screen automatically populates w
 ## Getting Started
 
 1. Clone this repository.
-
-To run the unit tests in Xcode select **Product ▸ Test** or run `swift test` from
-the command line (requires the dependencies above).
+2. From the project root run `pod install` to install the CocoaPods dependencies and generate `NexusFiles.xcworkspace`.
+3. Open `NexusFiles.xcworkspace` in Xcode 17.3 or later.
+4. Select the **NexusFilesMac** scheme and build or run the app. You can also execute `swift run NexusFilesMac` from the command line.
+5. To run the unit tests in Xcode select **Product ▸ Test** or run `swift test` from the command line (requires the dependencies above).
 
 
 The app presents three tabs—Tractor Information, Calibration, and Recommendation—where you can enter data. The toolbar allows you to save the data as an Excel file or share it using the system share sheet.
