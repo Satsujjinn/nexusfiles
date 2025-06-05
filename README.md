@@ -14,6 +14,12 @@ The interface is presented in English. The Home screen automatically populates w
 - **Home File Manager** – organize documents into categories, rename them (with duplicate name protection), and quickly locate folders using search from a green-themed home screen.
 - **Category Counts** – each folder on the Home screen now shows how many documents it contains.
 
+## Architecture
+
+The project follows a modular MVVM design. Core models, view models and helper utilities live in the `Sources` directory and are shared by the macOS app, iOS app and command line tool. Each feature is split into `Models`, `ViewModels` and `Views` to keep UI and data logic separate. Additional entry points such as the CLI and share extension reside at the repository root.
+
+See [Docs/ARCHITECTURE.md](Docs/ARCHITECTURE.md) for a detailed overview of the folder layout and Swift Package targets.
+
 ## Requirements
 
 - macOS 15 or later
