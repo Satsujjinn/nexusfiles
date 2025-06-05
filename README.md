@@ -60,6 +60,21 @@ workbook_close(workbook)
 
 For a sample Xcode project that uses the `libxlsxwriter` cocoapod for iOS and macOS with Objective‑C and Swift see **libxlsxwriter Cocoa Examples** or **LibXlsxWriterSwiftSample**.
 
+### Installation on macOS with Homebrew
+
+On macOS you can install `libxlsxwriter` using [Homebrew](https://brew.sh):
+
+```bash
+brew install libxlsxwriter
+```
+
+After installation, compile and run a program using the library with:
+
+```bash
+cc myexcel.c -o myexcel -I/usr/local/include -L/usr/local/lib -lxlsxwriter
+./myexcel
+```
+
 ### Running on Linux
 
 
