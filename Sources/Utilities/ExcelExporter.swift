@@ -15,7 +15,7 @@ struct ExcelExporter {
     }
 
     static func exportTractorInfo(pestRows: [PestRow], weedRows: [WeedRow]) throws -> URL {
-        let fileURL = documentsURL(filename: "NexusFiles_TractorInfo_\(isoDateString()).xlsx")
+        let fileURL = documentsURL(filename: "NexusFiles2025_TractorInfo_\(isoDateString()).xlsx")
         let workbook = Workbook(fileURL.path)
         defer { workbook.close() }
 
@@ -34,7 +34,7 @@ struct ExcelExporter {
     }
 
     static func exportCalibration(metadata: CalibrationMetadata, rows: [CalibrationRow]) throws -> URL {
-        let fileURL = documentsURL(filename: "NexusFiles_Calibration_\(isoDateString()).xlsx")
+        let fileURL = documentsURL(filename: "NexusFiles2025_Calibration_\(isoDateString()).xlsx")
         let workbook = Workbook(fileURL.path)
         defer { workbook.close() }
 
@@ -75,7 +75,7 @@ struct ExcelExporter {
     }
 
     static func exportRecommendation(metadata: RecommendationMetadata, rows: [RecommendationRow]) throws -> URL {
-        let fileURL = documentsURL(filename: "NexusFiles_Recommendation_\(isoDateString()).xlsx")
+        let fileURL = documentsURL(filename: "NexusFiles2025_Recommendation_\(isoDateString()).xlsx")
         let workbook = Workbook(fileURL.path)
         defer { workbook.close() }
 

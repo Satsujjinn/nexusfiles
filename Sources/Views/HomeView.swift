@@ -52,7 +52,7 @@ struct HomeView: View {
                 .padding()
             }
             .background(Color.white)
-            .navigationTitle("NexusFiles".localized)
+            .navigationTitle("NexusFiles 2025".localized)
             .searchable(text: $searchText, prompt: "Search Categories".localized) {
                 if searchText.isEmpty {
                     ForEach(vm.categories) { cat in

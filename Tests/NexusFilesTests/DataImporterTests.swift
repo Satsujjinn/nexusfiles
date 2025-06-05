@@ -9,4 +9,11 @@ final class DataImporterTests: XCTestCase {
         let (pests, _) = try DataImporter.parseTractorInfo(url: url)
         XCTAssertEqual(pests.first?.trekker, "A")
     }
+
+    func testParseTractorXLSX() throws {
+        let row = PestRow(trekker: "B", rat: "1", revs: "2", tyd: "3", pomp: "4", druk: "5")
+        let url = try ExcelExporter.exportTractorInfo(pestRows: [row], weedRows: [])
+        let (pests, _) = try DataImporter.parseTractorInfo(url: url)
+        XCTAssertEqual(pests.first?.trekker, "B")
+    }
 }

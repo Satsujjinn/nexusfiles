@@ -1,6 +1,6 @@
-# NexusFiles
+# NexusFiles 2025
 
-NexusFiles is an example SwiftUI 5 application demonstrating how to collect structured data and export it to Microsoft Excel. The app contains three data-entry forms and ships with a stub share extension for importing files.
+NexusFiles 2025 showcases a SwiftUI 6 workflow for collecting structured data and exporting it to Microsoft Excel. The app contains three data-entry forms and includes a share extension for importing files.
 
 The interface is presented in English. The Home screen automatically populates with folders useful for agricultural documentation such as "Spray Programs" and "MRL".
 
@@ -15,9 +15,9 @@ The interface is presented in English. The Home screen automatically populates w
 
 ## Requirements
 
-- macOS 14 or later
+- macOS 15 or later
 - Xcode 17.3
-- iOS 17 SDK
+- iOS 19 SDK
 
 ## Getting Started
 
@@ -88,7 +88,7 @@ Categories created on the Home screen are saved as JSON in the app's documents d
 
 ### iCloud Sync
 
-If iCloud is available, NexusFiles copies saved categories and form drafts to your iCloud container so data is shared across your devices. Ensure you are logged into iCloud before running the app.
+If iCloud is available, NexusFiles 2025 copies saved categories and form drafts to your iCloud container so data is shared across your devices. Ensure you are logged into iCloud before running the app.
 
 ## Contributing
 
