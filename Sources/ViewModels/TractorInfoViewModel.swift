@@ -46,6 +46,16 @@ final class TractorInfoViewModel: ObservableObject {
         weeds.removeAll()
     }
 
+    func importData(from url: URL) {
+        do {
+            let (pests, weeds) = try DataImporter.parseTractorInfo(url: url)
+            self.pests = pests
+            self.weeds = weeds
+        } catch {
+            print("Import error: \(error)")
+        }
+    }
+
     private func loadDraft() {
         if let draft = storage.load() {
             pests = draft.pests
