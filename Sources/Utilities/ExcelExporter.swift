@@ -1,5 +1,7 @@
 import Foundation
 import os
+import SwiftUI
+import UIKit
 
 struct ExcelExporter {
     static func isoDateString(_ date: Date = Date()) -> String {
