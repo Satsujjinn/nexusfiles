@@ -6,8 +6,7 @@ var targets: [Target] = [
         name: "NexusFiles",
         dependencies: [
             "CoreXLSX",
-            "SwiftCSV",
-            "ZIPFoundation"
+            "SwiftCSV"
         ],
         path: "Sources",
         resources: [.process("Localization")]
@@ -41,7 +40,6 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/CoreOffice/CoreXLSX.git", from: "0.9.0"),
         .package(url: "https://github.com/swiftcsv/SwiftCSV.git", from: "0.6.0"),
-        .package(url: "https://github.com/weichsel/ZIPFoundation.git", branch: "feature/swift6")
     ],
     targets: targets
 )
