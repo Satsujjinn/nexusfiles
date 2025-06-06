@@ -48,6 +48,10 @@ Categories created on the Home screen are saved as JSON in the app's documents d
 
 If iCloud is available, NexusFiles 2025 copies saved categories and form drafts to your iCloud container so data is shared across your devices. Ensure you are logged into iCloud before running the app.
 
+### Upload Endpoint
+
+The spreadsheet editor uploads files to a server. Set the `NEXUSFILES_UPLOAD_ENDPOINT` environment variable (or define `NexusFilesUploadEndpoint` in the app's Info.plist) to override the default `https://example.com/upload` endpoint.
+
 
 ## Contributing
 

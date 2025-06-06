@@ -9,6 +9,22 @@ struct SpreadsheetEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var loading = true
 
+    /// The endpoint for uploading spreadsheets. Read from the
+    /// `NEXUSFILES_UPLOAD_ENDPOINT` environment variable or the
+    /// `NexusFilesUploadEndpoint` Info.plist key. Falls back to
+    /// `https://example.com/upload` when unspecified.
+    private var uploadEndpoint: URL? {
+        if let env = ProcessInfo.processInfo.environment["NEXUSFILES_UPLOAD_ENDPOINT"],
+           let url = URL(string: env) {
+            return url
+        }
+        if let info = Bundle.main.object(forInfoDictionaryKey: "NexusFilesUploadEndpoint") as? String,
+           let url = URL(string: info) {
+            return url
+        }
+        return URL(string: "https://example.com/upload")
+    }
+
     var body: some View {
         NavigationStack {
             Group {
@@ -61,7 +77,7 @@ struct SpreadsheetEditorView: View {
     private func upload() async {
         let csv = rows.map { $0.joined(separator: ",") }.joined(separator: "\n")
         guard let data = csv.data(using: .utf8),
-              let uploadURL = URL(string: "https://example.com/upload") else { return }
+              let uploadURL = uploadEndpoint else { return }
         var request = URLRequest(url: uploadURL)
         request.httpMethod = "POST"
         let boundary = "Boundary-\(UUID().uuidString)"
