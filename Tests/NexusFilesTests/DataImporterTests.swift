@@ -16,4 +16,31 @@ final class DataImporterTests: XCTestCase {
         let (pests, _) = try DataImporter.parseTractorInfo(url: url)
         XCTAssertEqual(pests.first?.trekker, "B")
     }
+
+    func testUnsupportedTractorFormatThrows() throws {
+        let data = "dummy"
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("tractor.txt")
+        try data.write(to: url, atomically: true, encoding: .utf8)
+        XCTAssertThrowsError(try DataImporter.parseTractorInfo(url: url)) { error in
+            XCTAssertEqual(error as? ImportError, .unsupportedFormat)
+        }
+    }
+
+    func testUnsupportedCalibrationFormatThrows() throws {
+        let data = "dummy"
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("calibration.txt")
+        try data.write(to: url, atomically: true, encoding: .utf8)
+        XCTAssertThrowsError(try DataImporter.parseCalibration(url: url)) { error in
+            XCTAssertEqual(error as? ImportError, .unsupportedFormat)
+        }
+    }
+
+    func testUnsupportedRecommendationFormatThrows() throws {
+        let data = "dummy"
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("recommendation.txt")
+        try data.write(to: url, atomically: true, encoding: .utf8)
+        XCTAssertThrowsError(try DataImporter.parseRecommendation(url: url)) { error in
+            XCTAssertEqual(error as? ImportError, .unsupportedFormat)
+        }
+    }
 }
