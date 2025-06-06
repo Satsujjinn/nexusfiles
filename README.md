@@ -11,7 +11,7 @@ The interface is presented in English. The Home screen automatically populates w
 - **Recommendation** – create chemical recommendation lists.
 - **Excel Export** – generate `.csv` files that can be opened in spreadsheet apps.
 - **In-App Import** – load existing Excel or CSV files into the data entry forms for editing.
-- **Share Extension Stub** – placeholder for handling incoming Excel or CSV files.
+- **Share Extension** – import Excel or CSV files from other apps using the share sheet.
 - **Home File Manager** – organize documents into categories, rename them (with duplicate name protection), and quickly locate folders using search from a green-themed home screen.
 - **Category Counts** – each folder on the Home screen now shows how many documents it contains.
 
@@ -47,6 +47,10 @@ Categories created on the Home screen are saved as JSON in the app's documents d
 ### iCloud Sync
 
 If iCloud is available, NexusFiles 2025 copies saved categories and form drafts to your iCloud container so data is shared across your devices. Ensure you are logged into iCloud before running the app.
+
+### Importing Files with the Share Extension
+
+To bring in spreadsheets from other apps, open the file's share sheet and choose **NexusFiles 2025**. The extension will prompt you to import the data into one of the forms or save it under a category on the Home screen.
 
 
 ## Contributing
