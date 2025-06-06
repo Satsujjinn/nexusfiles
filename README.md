@@ -9,7 +9,7 @@ The interface is presented in English. The Home screen automatically populates w
 - **Tractor Information** – capture pest and weed management data.
 - **Calibration** – record calibration details for machinery.
 - **Recommendation** – create chemical recommendation lists.
-- **Excel Export** – generate `.xlsx` files using [xlsxwriter.swift](https://github.com/damuellen/xlsxwriter.swift).
+- **Excel Export** – generate `.csv` files that can be opened in spreadsheet apps.
 - **In-App Import** – load existing Excel or CSV files into the data entry forms for editing.
 - **Share Extension Stub** – placeholder for handling incoming Excel or CSV files.
 - **Home File Manager** – organize documents into categories, rename them (with duplicate name protection), and quickly locate folders using search from a green-themed home screen.
