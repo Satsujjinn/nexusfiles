@@ -87,7 +87,7 @@ struct CategoryView: View {
         shareURL = url
     }
 
-    private func uniqueURL(for url: URL) -> URL {
+    func uniqueURL(for url: URL) -> URL {
         var dest = baseURL.appendingPathComponent(url.lastPathComponent)
         var counter = 1
         while FileManager.default.fileExists(atPath: dest.path) {
